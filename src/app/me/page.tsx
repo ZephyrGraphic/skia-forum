@@ -3,6 +3,7 @@ import { Bookmark, LogIn, MessageSquare } from "lucide-react";
 
 import { Avatar } from "@/components/avatar";
 import { PostCard } from "@/components/post-card";
+import { UserLabels } from "@/components/user-labels";
 import { isGoogleAuthConfigured } from "@/lib/auth";
 import { loginPath } from "@/lib/auth-routes";
 import type { ForumPost } from "@/lib/forum-types";
@@ -40,7 +41,7 @@ export default async function MePage() {
       orderBy: { createdAt: "desc" },
       take: 24,
       include: {
-        author: { select: { name: true, image: true } },
+        author: { select: { name: true, image: true, role: true, badge: true } },
         category: { select: { name: true, slug: true, accent: true } },
         postTags: {
           include: { tag: { select: { name: true, slug: true } } },
@@ -57,7 +58,7 @@ export default async function MePage() {
       include: {
         post: {
           include: {
-            author: { select: { name: true, image: true } },
+            author: { select: { name: true, image: true, role: true, badge: true } },
             category: { select: { name: true, slug: true, accent: true } },
             postTags: {
               include: { tag: { select: { name: true, slug: true } } },
@@ -78,6 +79,7 @@ export default async function MePage() {
         <div>
           <span className="eyebrow">Member area</span>
           <h1>{session.user.name ?? "Member SKIA"}</h1>
+          <UserLabels badge={session.user.badge} role={session.user.role} />
           <p>{session.user.email}</p>
         </div>
       </section>

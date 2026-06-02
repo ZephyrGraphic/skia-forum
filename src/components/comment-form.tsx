@@ -6,10 +6,24 @@ import { loginPath } from "@/lib/auth-routes";
 type CommentFormProps = {
   postId: string;
   isLoggedIn: boolean;
+  isBanned: boolean;
   pathname: string;
 };
 
-export function CommentForm({ postId, isLoggedIn, pathname }: CommentFormProps) {
+export function CommentForm({
+  postId,
+  isLoggedIn,
+  isBanned,
+  pathname,
+}: CommentFormProps) {
+  if (isBanned) {
+    return (
+      <div className="reply-box muted-box">
+        <strong>Akunmu sedang dibatasi dan tidak bisa ikut berdiskusi.</strong>
+      </div>
+    );
+  }
+
   if (!isLoggedIn) {
     return (
       <div className="reply-box muted-box">

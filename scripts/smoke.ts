@@ -13,6 +13,7 @@ const checks: Check[] = [
   { path: "/auth/error?error=AccessDenied", text: "Login belum selesai" },
   { path: "/compose", text: "Login Google diperlukan" },
   { path: "/me", text: "Profil member" },
+  { path: "/admin", text: "Login untuk ikut ngobrol" },
   { path: "/api/auth/providers", text: "google" },
   { path: "/robots.txt", text: "sitemap" },
   { path: "/sitemap.xml", text: "<urlset" },

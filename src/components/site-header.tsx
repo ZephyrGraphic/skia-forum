@@ -2,11 +2,14 @@ import Link from "next/link";
 import { MessageSquare, Plus, Search, Shield } from "lucide-react";
 
 import { AuthControls } from "@/components/auth-controls";
+import { isAdminEmail } from "@/lib/admin-config";
 import { isGoogleAuthConfigured } from "@/lib/auth";
 import { getOptionalSession } from "@/lib/session";
 
 export async function SiteHeader() {
   const session = await getOptionalSession();
+  const isAdmin =
+    session?.user?.role === "ADMIN" || isAdminEmail(session?.user?.email);
 
   return (
     <header className="site-header">
@@ -34,6 +37,12 @@ export async function SiteHeader() {
             <Plus size={17} />
             Buat
           </Link>
+          {isAdmin ? (
+            <Link href="/admin">
+              <Shield size={17} />
+              Admin
+            </Link>
+          ) : null}
         </nav>
 
         <AuthControls

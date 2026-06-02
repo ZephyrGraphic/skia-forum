@@ -50,6 +50,7 @@ NEXTAUTH_SECRET
 NEXTAUTH_URL
 NEXT_PUBLIC_SITE_URL
 AUTH_TRUST_HOST
+ADMIN_EMAILS
 GOOGLE_CLIENT_ID
 GOOGLE_CLIENT_SECRET
 ```
@@ -72,4 +73,11 @@ lokal:
 
 ```bash
 npm run db:migrate:deploy
+```
+
+Admin utama default: `fenrisulfr696@gmail.com`. Setelah akun itu login Google
+pertama kali, jalankan:
+
+```bash
+npm run admin:promote
 ```

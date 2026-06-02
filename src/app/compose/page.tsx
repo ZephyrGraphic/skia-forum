@@ -51,6 +51,26 @@ export default async function ComposePage({ searchParams }: ComposePageProps) {
     );
   }
 
+  if (session.user.bannedAt) {
+    return (
+      <main className="container narrow-page">
+        <div className="page-panel">
+          <span className="panel-icon">
+            <LogIn size={22} />
+          </span>
+          <h1>Akun sedang dibatasi</h1>
+          <p>
+            Akunmu tidak bisa membuat thread baru selama status ban masih
+            aktif.
+          </p>
+          <Link className="button button-muted" href="/">
+            Kembali ke forum
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="container narrow-page">
       <div className="compose-head">

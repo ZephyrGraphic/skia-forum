@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 
 import { Avatar } from "@/components/avatar";
+import { UserLabels } from "@/components/user-labels";
 import type { ForumPost } from "@/lib/forum-types";
 import {
   cn,
@@ -74,6 +75,7 @@ export function PostCard({ post }: PostCardProps) {
           <Avatar image={post.author.image} name={post.author.name} size="sm" />
           <span>{post.author.name ?? "Member"}</span>
         </div>
+        <UserLabels badge={post.author.badge} role={post.author.role} />
         <span className="time-label">{timeAgo(post.createdAt)}</span>
         <div className="metric-grid">
           <span>

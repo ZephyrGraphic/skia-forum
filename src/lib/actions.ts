@@ -36,6 +36,17 @@ async function requireUserId(callbackUrl = "/") {
     redirect(loginPath(callbackUrl));
   }
 
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { bannedAt: true },
+  });
+
+  if (user?.bannedAt) {
+    redirect(
+      `/auth/error?error=Banned&callbackUrl=${encodeURIComponent(callbackUrl)}`,
+    );
+  }
+
   return session.user.id;
 }
 

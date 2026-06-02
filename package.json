@@ -14,6 +14,7 @@
     "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio",
     "verify:prisma": "tsx scripts/verify-prisma.ts",
+    "admin:promote": "tsx scripts/promote-admin.ts",
     "smoke": "tsx scripts/smoke.ts",
     "deploy:check": "npm run lint && npm run verify:prisma && npm run build"
   },

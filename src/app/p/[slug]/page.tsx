@@ -6,6 +6,7 @@ import { Eye, MessageCircle } from "lucide-react";
 import { Avatar } from "@/components/avatar";
 import { CommentForm } from "@/components/comment-form";
 import { EngagementBar } from "@/components/engagement-bar";
+import { UserLabels } from "@/components/user-labels";
 import { prisma } from "@/lib/prisma";
 import { getOptionalSession } from "@/lib/session";
 import {
@@ -48,7 +49,7 @@ export default async function ThreadPage({ params }: ThreadPageProps) {
     prisma.post.findUnique({
       where: { slug },
       include: {
-        author: { select: { name: true, image: true } },
+        author: { select: { name: true, image: true, role: true, badge: true } },
         category: { select: { name: true, slug: true, accent: true } },
         postTags: {
           include: { tag: { select: { name: true, slug: true } } },
@@ -57,7 +58,7 @@ export default async function ThreadPage({ params }: ThreadPageProps) {
           orderBy: { createdAt: "asc" },
           take: 100,
           include: {
-            author: { select: { name: true, image: true } },
+            author: { select: { name: true, image: true, role: true, badge: true } },
           },
         },
         _count: {
@@ -72,6 +73,7 @@ export default async function ThreadPage({ params }: ThreadPageProps) {
   }
 
   const userId = session?.user?.id;
+  const isBanned = Boolean(session?.user?.bannedAt);
   const userState = userId
     ? await Promise.all([
         prisma.reaction.findUnique({
@@ -111,6 +113,7 @@ export default async function ThreadPage({ params }: ThreadPageProps) {
           <Avatar image={post.author.image} name={post.author.name} />
           <span>
             <strong>{post.author.name ?? "Member"}</strong>
+            <UserLabels badge={post.author.badge} role={post.author.role} />
             <small>{timeAgo(post.createdAt)}</small>
           </span>
         </div>
@@ -133,7 +136,7 @@ export default async function ThreadPage({ params }: ThreadPageProps) {
           bookmarks={post._count.bookmarks}
           hasBookmarked={Boolean(bookmark)}
           hasReacted={Boolean(reaction)}
-          isLoggedIn={Boolean(userId)}
+          isLoggedIn={Boolean(userId) && !isBanned}
           pathname={`/p/${post.slug}`}
           postId={post.id}
           reactions={post._count.reactions}
@@ -174,7 +177,13 @@ export default async function ThreadPage({ params }: ThreadPageProps) {
               <Avatar image={comment.author.image} name={comment.author.name} />
               <div>
                 <div className="comment-head">
-                  <strong>{comment.author.name ?? "Member"}</strong>
+                  <span>
+                    <strong>{comment.author.name ?? "Member"}</strong>
+                    <UserLabels
+                      badge={comment.author.badge}
+                      role={comment.author.role}
+                    />
+                  </span>
                   <span>{timeAgo(comment.createdAt)}</span>
                 </div>
                 <p>{comment.body}</p>
@@ -185,6 +194,7 @@ export default async function ThreadPage({ params }: ThreadPageProps) {
 
         <CommentForm
           isLoggedIn={Boolean(userId)}
+          isBanned={isBanned}
           pathname={`/p/${post.slug}#comments`}
           postId={post.id}
         />

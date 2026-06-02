@@ -141,7 +141,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         orderBy: [{ pinned: "desc" }, { featured: "desc" }, { createdAt: "desc" }],
         take: 40,
         include: {
-          author: { select: { name: true, image: true } },
+          author: { select: { name: true, image: true, role: true, badge: true } },
           category: { select: { name: true, slug: true, accent: true } },
           postTags: {
             include: { tag: { select: { name: true, slug: true } } },

@@ -23,6 +23,8 @@ export type ForumPost = {
   author: {
     name: string | null;
     image: string | null;
+    role?: string | null;
+    badge?: string | null;
   };
   category: {
     name: string;

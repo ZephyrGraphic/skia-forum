@@ -12,6 +12,8 @@ type AuthErrorPageProps = {
 const authErrorMessages: Record<string, string> = {
   AccessDenied:
     "Login dibatalkan atau akses Google tidak diberikan. Kamu bisa coba lagi kapan saja.",
+  Banned:
+    "Akun ini sedang dibatasi oleh admin, jadi belum bisa membuat thread, komentar, reaction, atau bookmark.",
   Callback:
     "Google mengembalikan respons yang tidak lengkap. Coba login ulang.",
   OAuthAccountNotLinked:
