@@ -2,6 +2,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
+import { isAdminEmail } from "@/lib/admin-config";
 import { prisma } from "@/lib/prisma";
 
 function hasUsableEnv(name: string) {
@@ -65,7 +66,18 @@ export const authOptions: NextAuthOptions = {
     },
     session({ session, user }) {
       if (session.user) {
+        const appUser = user as typeof user & {
+          badge?: string | null;
+          bannedAt?: Date | null;
+          role?: string | null;
+        };
+
         session.user.id = user.id;
+        session.user.role = isAdminEmail(user.email)
+          ? "ADMIN"
+          : appUser.role ?? "MEMBER";
+        session.user.badge = appUser.badge ?? null;
+        session.user.bannedAt = appUser.bannedAt ?? null;
       }
 
       return session;
