@@ -22,7 +22,7 @@ export function FilterBar({ activeType, query, category, tag }: FilterBarProps) 
         <input
           defaultValue={query}
           name="q"
-          placeholder="Cari build, stage, boss, guild..."
+          placeholder="Cari build, stage, hero, guild..."
           type="search"
         />
         <button className="button button-muted" type="submit">

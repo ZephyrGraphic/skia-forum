@@ -16,8 +16,8 @@ export async function SiteHeader() {
             <Shield size={19} />
           </span>
           <span>
-            <strong>SKIA Forum</strong>
-            <small>Seven Knights Idle Adventure</small>
+            <strong>SKIA Hangout</strong>
+            <small>Board komunitas</small>
           </span>
         </Link>
 
@@ -32,7 +32,7 @@ export async function SiteHeader() {
           </Link>
           <Link href="/compose">
             <Plus size={17} />
-            Thread
+            Buat
           </Link>
         </nav>
 

@@ -1,5 +1,11 @@
 import Link from "next/link";
-import { DatabaseZap, MessageSquarePlus, Star, Users } from "lucide-react";
+import {
+  DatabaseZap,
+  MessageCircle,
+  MessageSquarePlus,
+  Star,
+  Users,
+} from "lucide-react";
 
 import { CategoryNav } from "@/components/category-nav";
 import { EmptyState } from "@/components/empty-state";
@@ -161,27 +167,42 @@ export default async function HomePage({ searchParams }: HomePageProps) {
 
   return (
     <main>
-      <section className="hero-band">
-        <HeroBackdrop priority />
-        <div className="hero-overlay" />
-        <div className="container hero-content">
-          <div className="hero-copy">
-            <span className="eyebrow">Komunitas Indonesia</span>
-            <h1>Seven Knights Idle Adventure Forum</h1>
+      <section className="home-dock">
+        <div className="container home-dock-grid">
+          <div className="home-copy">
+            <span className="eyebrow">SKIA Hangout</span>
+            <h1>Ngobrol progress, build, dan guild tanpa tenggelam di chat.</h1>
             <p>
-              Tempat ngobrol soal build, progress idle, guild, boss stage,
-              patch note, dan keputusan resource yang bikin akun lebih rapi.
+              Board kecil buat pemain Seven Knights Idle Adventure yang mau
+              berbagi catatan stage, prioritas resource, kabar patch, dan
+              rekrutmen guild.
             </p>
             <div className="hero-actions">
               <Link className="button button-primary" href="/compose">
                 <MessageSquarePlus size={18} />
-                Buat Thread
+                Buat thread
               </Link>
-              <Link className="button button-ghost" href="/?type=GUIDE">
-                Baca Guide
+              <Link className="button button-muted" href="/?type=QUESTION">
+                <MessageCircle size={18} />
+                Lihat tanya jawab
               </Link>
             </div>
           </div>
+
+          <aside className="home-visual" aria-label="Sorotan forum">
+            <HeroBackdrop priority />
+            <div className="home-visual-card">
+              <span className="eyebrow">Sorotan board</span>
+              <strong>{featuredPost?.title ?? "Belum ada thread aktif"}</strong>
+              <small>
+                {featuredPost
+                  ? `${featuredPost.category.name} oleh ${
+                      featuredPost.author.name ?? "Member"
+                    }`
+                  : "Mulai thread pertama untuk komunitas."}
+              </small>
+            </div>
+          </aside>
 
           <div className="hero-stats" aria-label="Statistik forum">
             <span>

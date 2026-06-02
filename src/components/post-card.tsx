@@ -44,13 +44,13 @@ export function PostCard({ post }: PostCardProps) {
           {post.pinned ? (
             <span className="mini-status">
               <Pin size={14} />
-              Pinned
+              Disematkan
             </span>
           ) : null}
           {post.featured ? (
             <span className="mini-status">
               <Sparkles size={14} />
-              Featured
+              Sorotan
             </span>
           ) : null}
         </div>
