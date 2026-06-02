@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { getServerSession } from "next-auth";
 import { AlertCircle, LogIn } from "lucide-react";
 
 import { ComposeForm } from "@/components/compose-form";
-import { authOptions, isGoogleAuthConfigured } from "@/lib/auth";
+import { isGoogleAuthConfigured } from "@/lib/auth";
+import { loginPath } from "@/lib/auth-routes";
 import { prisma } from "@/lib/prisma";
+import { getOptionalSession } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +15,7 @@ type ComposePageProps = {
 
 export default async function ComposePage({ searchParams }: ComposePageProps) {
   const [session, categories, params] = await Promise.all([
-    getServerSession(authOptions),
+    getOptionalSession(),
     prisma.category.findMany({
       orderBy: { order: "asc" },
       include: { _count: { select: { posts: true } } },
@@ -41,7 +42,7 @@ export default async function ComposePage({ searchParams }: ComposePageProps) {
           </p>
           <Link
             className="button button-primary"
-            href={isGoogleAuthConfigured ? "/api/auth/signin" : "/auth/setup"}
+            href={isGoogleAuthConfigured ? loginPath("/compose") : "/auth/setup"}
           >
             Login Google
           </Link>

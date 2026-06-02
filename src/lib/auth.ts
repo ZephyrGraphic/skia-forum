@@ -32,6 +32,10 @@ const authAdapterClient = prisma as unknown as Parameters<typeof PrismaAdapter>[
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(authAdapterClient),
   secret: process.env.NEXTAUTH_SECRET,
+  pages: {
+    signIn: "/auth/login",
+    error: "/auth/error",
+  },
   session: {
     strategy: "database",
   },
@@ -42,6 +46,23 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
+    redirect({ url, baseUrl }) {
+      if (url.startsWith("/")) {
+        return `${baseUrl}${url}`;
+      }
+
+      try {
+        const parsedUrl = new URL(url);
+
+        if (parsedUrl.origin === baseUrl) {
+          return url;
+        }
+      } catch {
+        return baseUrl;
+      }
+
+      return baseUrl;
+    },
     session({ session, user }) {
       if (session.user) {
         session.user.id = user.id;

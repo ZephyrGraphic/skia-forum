@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { LogIn, LogOut, Settings } from "lucide-react";
-import { signIn, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 
 import { Avatar } from "@/components/avatar";
 
@@ -45,13 +45,12 @@ export function AuthControls({ user, canUseGoogle }: AuthControlsProps) {
   }
 
   return (
-    <button
+    <Link
       className="button button-primary"
-      onClick={() => void signIn("google", { callbackUrl: "/" })}
-      type="button"
+      href="/auth/login?callbackUrl=%2F"
     >
       <LogIn size={18} />
       Login Google
-    </button>
+    </Link>
   );
 }

@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getServerSession } from "next-auth";
 import { Eye, MessageCircle } from "lucide-react";
 
 import { Avatar } from "@/components/avatar";
 import { CommentForm } from "@/components/comment-form";
 import { EngagementBar } from "@/components/engagement-bar";
-import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { getOptionalSession } from "@/lib/session";
 import {
   cn,
   formatNumber,
@@ -45,7 +44,7 @@ export async function generateMetadata({
 export default async function ThreadPage({ params }: ThreadPageProps) {
   const { slug } = await params;
   const [session, post] = await Promise.all([
-    getServerSession(authOptions),
+    getOptionalSession(),
     prisma.post.findUnique({
       where: { slug },
       include: {
@@ -184,7 +183,11 @@ export default async function ThreadPage({ params }: ThreadPageProps) {
           ))}
         </div>
 
-        <CommentForm isLoggedIn={Boolean(userId)} postId={post.id} />
+        <CommentForm
+          isLoggedIn={Boolean(userId)}
+          pathname={`/p/${post.slug}#comments`}
+          postId={post.id}
+        />
       </section>
     </main>
   );

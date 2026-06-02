@@ -33,6 +33,15 @@ Sebelum push, jalankan:
 npm run deploy:check
 ```
 
+Untuk smoke test halaman lokal, jalankan dev server lalu:
+
+```bash
+npm run smoke
+```
+
+Smoke test mengecek forum utama, halaman login, halaman gagal login,
+halaman yang butuh login, endpoint NextAuth, robots, dan sitemap.
+
 Environment variables yang perlu diisi di Vercel:
 
 ```text

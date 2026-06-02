@@ -1,14 +1,13 @@
 import Link from "next/link";
-import { getServerSession } from "next-auth";
 import { headers } from "next/headers";
 import { CheckCircle, KeyRound, LogIn } from "lucide-react";
 
 import { AuthControls } from "@/components/auth-controls";
 import {
   authConfigStatus,
-  authOptions,
   isGoogleAuthConfigured,
 } from "@/lib/auth";
+import { getOptionalSession } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
 
@@ -25,7 +24,7 @@ async function getRequestOrigin() {
 
 export default async function AuthSetupPage() {
   const [session, requestOrigin] = await Promise.all([
-    getServerSession(authOptions),
+    getOptionalSession(),
     getRequestOrigin(),
   ]);
   const callbackUrl = `${requestOrigin}/api/auth/callback/google`;

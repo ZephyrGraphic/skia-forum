@@ -1,18 +1,20 @@
 import { Send } from "lucide-react";
 
 import { createCommentAction } from "@/lib/actions";
+import { loginPath } from "@/lib/auth-routes";
 
 type CommentFormProps = {
   postId: string;
   isLoggedIn: boolean;
+  pathname: string;
 };
 
-export function CommentForm({ postId, isLoggedIn }: CommentFormProps) {
+export function CommentForm({ postId, isLoggedIn, pathname }: CommentFormProps) {
   if (!isLoggedIn) {
     return (
       <div className="reply-box muted-box">
         <strong>Login Google untuk ikut berdiskusi.</strong>
-        <a className="button button-primary" href="/auth/setup">
+        <a className="button button-primary" href={loginPath(pathname)}>
           Login
         </a>
       </div>

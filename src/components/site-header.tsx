@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { getServerSession } from "next-auth";
 import { MessageSquare, Plus, Search, Shield } from "lucide-react";
 
 import { AuthControls } from "@/components/auth-controls";
-import { authOptions, isGoogleAuthConfigured } from "@/lib/auth";
+import { isGoogleAuthConfigured } from "@/lib/auth";
+import { getOptionalSession } from "@/lib/session";
 
 export async function SiteHeader() {
-  const session = await getServerSession(authOptions);
+  const session = await getOptionalSession();
 
   return (
     <header className="site-header">

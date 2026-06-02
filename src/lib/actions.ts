@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 
 import { authOptions } from "@/lib/auth";
+import { loginPath, safeReturnPath } from "@/lib/auth-routes";
 import { prisma } from "@/lib/prisma";
 import { parseTags, slugify } from "@/lib/utils";
 
@@ -22,11 +23,17 @@ const commentSchema = z.object({
   body: z.string().trim().min(3).max(1600),
 });
 
-async function requireUserId() {
-  const session = await getServerSession(authOptions);
+async function requireUserId(callbackUrl = "/") {
+  let session;
+
+  try {
+    session = await getServerSession(authOptions);
+  } catch {
+    redirect(loginPath(callbackUrl));
+  }
 
   if (!session?.user?.id) {
-    redirect("/auth/setup");
+    redirect(loginPath(callbackUrl));
   }
 
   return session.user.id;
@@ -46,7 +53,7 @@ async function uniquePostSlug(title: string) {
 }
 
 export async function createPostAction(formData: FormData) {
-  const userId = await requireUserId();
+  const userId = await requireUserId("/compose");
   const result = postSchema.safeParse({
     title: formData.get("title"),
     body: formData.get("body"),
@@ -102,7 +109,6 @@ export async function createPostAction(formData: FormData) {
 }
 
 export async function createCommentAction(formData: FormData) {
-  const userId = await requireUserId();
   const result = commentSchema.safeParse({
     postId: formData.get("postId"),
     body: formData.get("body"),
@@ -121,6 +127,8 @@ export async function createCommentAction(formData: FormData) {
     redirect("/");
   }
 
+  const userId = await requireUserId(`/p/${post.slug}#comments`);
+
   await prisma.comment.create({
     data: {
       body: result.data.body,
@@ -134,9 +142,9 @@ export async function createCommentAction(formData: FormData) {
 }
 
 export async function toggleReactionAction(formData: FormData) {
-  const userId = await requireUserId();
   const postId = String(formData.get("postId") ?? "");
-  const pathname = String(formData.get("pathname") ?? "/");
+  const pathname = safeReturnPath(String(formData.get("pathname") ?? "/"));
+  const userId = await requireUserId(pathname);
 
   if (!postId) {
     redirect(pathname);
@@ -167,9 +175,9 @@ export async function toggleReactionAction(formData: FormData) {
 }
 
 export async function toggleBookmarkAction(formData: FormData) {
-  const userId = await requireUserId();
   const postId = String(formData.get("postId") ?? "");
-  const pathname = String(formData.get("pathname") ?? "/");
+  const pathname = safeReturnPath(String(formData.get("pathname") ?? "/"));
+  const userId = await requireUserId(pathname);
 
   if (!postId) {
     redirect(pathname);

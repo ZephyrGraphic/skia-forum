@@ -1,17 +1,18 @@
 import Link from "next/link";
-import { getServerSession } from "next-auth";
 import { Bookmark, LogIn, MessageSquare } from "lucide-react";
 
 import { Avatar } from "@/components/avatar";
 import { PostCard } from "@/components/post-card";
-import { authOptions, isGoogleAuthConfigured } from "@/lib/auth";
+import { isGoogleAuthConfigured } from "@/lib/auth";
+import { loginPath } from "@/lib/auth-routes";
 import type { ForumPost } from "@/lib/forum-types";
 import { prisma } from "@/lib/prisma";
+import { getOptionalSession } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
 
 export default async function MePage() {
-  const session = await getServerSession(authOptions);
+  const session = await getOptionalSession();
 
   if (!session?.user?.id) {
     return (
@@ -24,7 +25,7 @@ export default async function MePage() {
           <p>Login Google untuk melihat thread dan bookmark milikmu.</p>
           <Link
             className="button button-primary"
-            href={isGoogleAuthConfigured ? "/api/auth/signin" : "/auth/setup"}
+            href={isGoogleAuthConfigured ? loginPath("/me") : "/auth/setup"}
           >
             Login Google
           </Link>
