@@ -821,6 +821,7 @@ button:disabled {
   color: #475569;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 13px;
+  overflow-wrap: anywhere;
 }
 
 .thread-layout {

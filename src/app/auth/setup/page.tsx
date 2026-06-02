@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getServerSession } from "next-auth";
+import { headers } from "next/headers";
 import { CheckCircle, KeyRound, LogIn } from "lucide-react";
 
 import { AuthControls } from "@/components/auth-controls";
@@ -11,8 +12,23 @@ import {
 
 export const dynamic = "force-dynamic";
 
+async function getRequestOrigin() {
+  const requestHeaders = await headers();
+  const forwardedHost = requestHeaders.get("x-forwarded-host");
+  const forwardedProto = requestHeaders.get("x-forwarded-proto");
+  const host = forwardedHost ?? requestHeaders.get("host") ?? "localhost:3000";
+  const protocol =
+    forwardedProto ?? (host.includes("localhost") ? "http" : "https");
+
+  return `${protocol}://${host}`.replace(/\/+$/, "");
+}
+
 export default async function AuthSetupPage() {
-  const session = await getServerSession(authOptions);
+  const [session, requestOrigin] = await Promise.all([
+    getServerSession(authOptions),
+    getRequestOrigin(),
+  ]);
+  const callbackUrl = `${requestOrigin}/api/auth/callback/google`;
 
   return (
     <main className="container narrow-page">
@@ -42,7 +58,8 @@ export default async function AuthSetupPage() {
           <span>
             Production URL: isi NEXTAUTH_URL setelah domain Vercel tersedia
           </span>
-          <span>Callback Google: /api/auth/callback/google</span>
+          <span>Authorized JavaScript origin: {requestOrigin}</span>
+          <span>Authorized redirect URI: {callbackUrl}</span>
         </div>
 
         <div className="setup-actions">

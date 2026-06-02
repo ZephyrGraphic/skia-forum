@@ -40,6 +40,7 @@ DATABASE_URL
 NEXTAUTH_SECRET
 NEXTAUTH_URL
 NEXT_PUBLIC_SITE_URL
+AUTH_TRUST_HOST
 GOOGLE_CLIENT_ID
 GOOGLE_CLIENT_SECRET
 ```
@@ -52,6 +53,10 @@ Callback URL Google OAuth production:
 ```text
 https://nama-project.vercel.app/api/auth/callback/google
 ```
+
+Kalau muncul `redirect_uri_mismatch`, buka `/auth/setup` di domain Vercel.
+Salin nilai `Authorized JavaScript origin` dan `Authorized redirect URI`
+yang tampil di halaman itu ke OAuth Client ID Google Cloud.
 
 Kalau schema berubah setelah deploy, jalankan migrasi production dari terminal
 lokal:
