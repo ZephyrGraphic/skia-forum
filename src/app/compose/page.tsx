@@ -1,9 +1,10 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { AlertCircle, LogIn } from "lucide-react";
 
 import { ComposeForm } from "@/components/compose-form";
 import { isGoogleAuthConfigured } from "@/lib/auth";
-import { loginPath } from "@/lib/auth-routes";
+import { loginPath, usernameSetupPath } from "@/lib/auth-routes";
 import { prisma } from "@/lib/prisma";
 import { getOptionalSession } from "@/lib/session";
 
@@ -69,6 +70,10 @@ export default async function ComposePage({ searchParams }: ComposePageProps) {
         </div>
       </main>
     );
+  }
+
+  if (!session.user.username) {
+    redirect(usernameSetupPath("/compose"));
   }
 
   return (

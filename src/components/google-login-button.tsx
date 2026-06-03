@@ -15,6 +15,9 @@ export function GoogleLoginButton({
   canUseGoogle,
 }: GoogleLoginButtonProps) {
   const [isPending, setIsPending] = useState(false);
+  const onboardingCallbackUrl = `/auth/username?callbackUrl=${encodeURIComponent(
+    callbackUrl,
+  )}`;
 
   if (!canUseGoogle) {
     return (
@@ -31,7 +34,7 @@ export function GoogleLoginButton({
       disabled={isPending}
       onClick={() => {
         setIsPending(true);
-        void signIn("google", { callbackUrl });
+        void signIn("google", { callbackUrl: onboardingCallbackUrl });
       }}
       type="button"
     >

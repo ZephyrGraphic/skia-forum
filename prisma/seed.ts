@@ -49,16 +49,19 @@ const sampleUsers = [
   {
     email: "aria@skia.local",
     name: "Aria Idle",
+    username: "aria_idle",
     image: "https://api.dicebear.com/8.x/adventurer/svg?seed=Aria",
   },
   {
     email: "rudy@skia.local",
     name: "Rudy Raid",
+    username: "rudy_raid",
     image: "https://api.dicebear.com/8.x/adventurer/svg?seed=Rudy",
   },
   {
     email: "nina@skia.local",
     name: "Nina Meta",
+    username: "nina_meta",
     image: "https://api.dicebear.com/8.x/adventurer/svg?seed=Nina",
   },
 ];

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SKIA Hangout - Detail Thread</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed": "#002114",
+                        "on-surface-variant": "#3d4a42",
+                        "on-tertiary-container": "#fffbff",
+                        "surface-dim": "#d5dcd6",
+                        "background": "#f5fbf5",
+                        "outline": "#6d7a72",
+                        "tertiary-container": "#6063ee",
+                        "primary-container": "#00855d",
+                        "primary-fixed": "#85f8c4",
+                        "secondary-container": "#dae2fd",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "tertiary": "#4648d4",
+                        "surface-container-high": "#e4eae4",
+                        "on-tertiary-fixed-variant": "#2f2ebe",
+                        "on-secondary-fixed": "#131b2e",
+                        "surface-container": "#e9efe9",
+                        "secondary": "#565e74",
+                        "error": "#ba1a1a",
+                        "inverse-primary": "#68dba9",
+                        "surface": "#f5fbf5",
+                        "tertiary-fixed": "#e1e0ff",
+                        "tertiary-fixed-dim": "#c0c1ff",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "on-surface": "#171d19",
+                        "on-secondary-container": "#5c647a",
+                        "on-background": "#171d19",
+                        "on-primary-container": "#f5fff7",
+                        "outline-variant": "#bccac0",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#2c322e",
+                        "secondary-fixed": "#dae2fd",
+                        "surface-bright": "#f5fbf5",
+                        "inverse-on-surface": "#ecf2ec",
+                        "primary": "#006948",
+                        "on-primary": "#ffffff",
+                        "surface-container-highest": "#dee4de",
+                        "surface-container-low": "#eff5ef",
+                        "on-tertiary-fixed": "#07006c",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "surface-variant": "#dee4de",
+                        "surface-tint": "#006c4a",
+                        "on-error-container": "#93000a",
+                        "primary-fixed-dim": "#68dba9",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#005137"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "40px",
+                        "2xl": "64px",
+                        "container-max": "1280px",
+                        "sm": "12px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "xs": "8px",
+                        "base": "4px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "body-sm": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }]
+                    },
+                    "boxShadow": {
+                        "level-1": "0px 4px 20px rgba(15, 23, 42, 0.05)",
+                        "level-2": "0px 12px 32px rgba(15, 23, 42, 0.12)"
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #f8fafc; }
+        .glass-nav {
+            background-color: rgba(245, 251, 245, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 2px solid #006948;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            stroke-width: 2px;
+        }
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased">
+<!-- TopNavBar -->
+<nav class="glass-nav docked full-width top-0 sticky z-50 shadow-sm border-b-2 border-primary/10">
+<div class="flex justify-between items-center px-lg py-sm max-w-container-max mx-auto">
+<div class="font-headline-lg text-headline-lg font-bold text-primary tracking-tight">
+                SKIA Hangout
+            </div>
+<div class="hidden md:flex gap-md font-headline-sm text-headline-sm md:font-headline-md md:text-headline-md">
+<a class="text-primary border-b-2 border-primary pb-1 cursor-pointer active:scale-95 transition-transform" href="#">Forums</a>
+<a class="text-on-surface-variant pb-1 hover:text-primary transition-colors duration-300 cursor-pointer active:scale-95 transition-transform" href="#">Members</a>
+<a class="text-on-surface-variant pb-1 hover:text-primary transition-colors duration-300 cursor-pointer active:scale-95 transition-transform" href="#">Wiki</a>
+<a class="text-on-surface-variant pb-1 hover:text-primary transition-colors duration-300 cursor-pointer active:scale-95 transition-transform" href="#">Lounge</a>
+</div>
+<div class="flex gap-sm">
+<span class="material-symbols-outlined text-primary cursor-pointer hover:text-primary-container transition-colors" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined text-primary cursor-pointer hover:text-primary-container transition-colors" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+</nav>
+<div class="max-w-container-max mx-auto px-gutter py-xl flex flex-col lg:flex-row gap-lg">
+<!-- Main Content Area -->
+<main class="flex-1 space-y-lg">
+<!-- Breadcrumbs -->
+<nav class="flex gap-xs items-center text-on-surface-variant font-label-md text-label-md">
+<a class="hover:text-primary transition-colors" href="#">Forums</a>
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Guides &amp; Builds</a>
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary font-bold">Tactical Stage 2000+ Guide</span>
+</nav>
+<!-- Thread Header Card -->
+<article class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-level-1 overflow-hidden">
+<div class="p-lg space-y-md">
+<!-- Badges -->
+<div class="flex gap-xs">
+<span class="px-sm py-base bg-primary-container text-on-primary-container rounded-full font-label-sm text-label-sm flex items-center gap-base">
+<span class="material-symbols-outlined text-[14px]" data-icon="menu_book">menu_book</span> Guide
+                        </span>
+<span class="px-sm py-base bg-tertiary-container text-on-tertiary-container rounded-full font-label-sm text-label-sm flex items-center gap-base">
+<span class="material-symbols-outlined text-[14px]" data-icon="verified">verified</span> Verified
+                        </span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Panduan Komprehensif: Menembus Tactical Stage 2000+</h1>
+<!-- Author Row -->
+<div class="flex items-center gap-sm pt-sm pb-md border-b border-surface-variant">
+<img alt="Avatar" class="w-12 h-12 rounded-full object-cover border-2 border-primary-container" data-alt="A detailed, realistic portrait of an experienced male gamer focused intensely on a screen. High-key lighting highlights his features against a clean, minimal white background with subtle emerald green ambient reflections. Premium gaming aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlzgkKqEFNRQfUmrcbrWOWfJK6z0JmSQgjF-c7axI9-cwS2J6XqlvQqm9lP7QpuIBfkRVBUjUBpBBk6_e28_P2-E2gYsU5SQ_4HbubQBQGmVoTFHD2P8czndOXcbKNfiiteyZ4VQlD4TLiJL5edS1DWjmqLOo_5Pl0gn69FoKqVCrtMLlMs26iqNQ4T_yqhS7f8Ops9XHTD5XiIYWeaIzQ4hT0dUM8UQOd11dk-nFo96rnYte9YKZFQaM1rTqvjlTrF7t7t9m4YjF-"/>
+<div class="flex-1">
+<div class="flex items-center gap-xs">
+<span class="font-label-md text-label-md font-bold text-on-surface">Commander_X</span>
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded font-label-sm text-label-sm">Expert</span>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex gap-sm mt-1">
+<span>Diposting 2 jam yang lalu</span>
+<span>•</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]" data-icon="visibility">visibility</span> 1.2k Views</span>
+</div>
+</div>
+</div>
+<!-- Content -->
+<div class="font-body-lg text-body-lg text-on-surface space-y-md pt-sm">
+<p>Halo Komandan! Mencapai Stage 2000+ bukanlah perkara mudah. Butuh sinergi tim yang sempurna dan pemahaman mekanik tingkat lanjut. Di panduan ini, kita akan bedah komposisi tim optimal dan taktik rotasi.</p>
+<h2 class="font-headline-md text-headline-md text-primary mt-lg">1. Komposisi Tim Inti (Core Comp)</h2>
+<p>Untuk bertahan di <span class="text-primary font-semibold bg-primary-container/20 px-1 rounded">End-Game Area</span>, prioritas utama adalah Crowd Control (CC) dan Sustain. Jangan hanya fokus pada DPS murni.</p>
+<div class="bg-surface-container-low p-md rounded-lg border border-outline-variant my-md">
+<ul class="list-disc list-inside space-y-sm font-body-md text-body-md">
+<li><strong>Tank (Vanguard):</strong> Sangat krusial. Gunakan equip dengan bonus <em>Defense %</em> dan <em>HP Regen</em>.</li>
+<li><strong>Healer (Support):</strong> Rotasi skill penyembuhan harus tepat waktu, jangan tumpang tindih.</li>
+<li><strong>AoE DPS:</strong> Penting untuk membersihkan wave musuh dengan cepat sebelum tank tumbang.</li>
+</ul>
+</div>
+<p>Kesalahan fatal yang sering terjadi adalah mengabaikan <em>upgrade</em> relic pada Support. Pastikan relic mereka minimal level 15 sebelum menyentuh stage 1800.</p>
+</div>
+<!-- Interactive Bar -->
+<div class="flex justify-between items-center pt-md mt-lg border-t border-surface-variant">
+<div class="flex gap-sm">
+<button class="flex items-center gap-xs px-sm py-xs rounded hover:bg-surface-container transition-colors text-primary font-label-md text-label-md">
+<span class="material-symbols-outlined" data-icon="thumb_up">thumb_up</span> 342
+                            </button>
+<button class="flex items-center gap-xs px-sm py-xs rounded hover:bg-surface-container transition-colors text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined" data-icon="thumb_down">thumb_down</span> 12
+                            </button>
+</div>
+<div class="flex gap-sm">
+<button aria-label="Bookmark" class="flex items-center gap-xs px-sm py-xs rounded hover:bg-surface-container transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="bookmark">bookmark</span>
+</button>
+<button aria-label="Share" class="flex items-center gap-xs px-sm py-xs rounded hover:bg-surface-container transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+<!-- Comments Section -->
+<section class="space-y-md">
+<h3 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-sm">
+                    Komentar <span class="bg-surface-container-high text-on-surface px-2 py-1 rounded-full text-sm">45</span>
+</h3>
+<!-- Reply Input -->
+<div class="flex gap-md bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm">
+<img alt="Your Avatar" class="w-10 h-10 rounded-full object-cover" data-alt="A clean, modern avatar showing a smiling young man in a minimalist setting. Bright, flat lighting suitable for a high-end web platform. Soft emerald green accents in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1AH1iPKbMxb0JvOeNKaCv2L1OS4Up1oGFK9IgIJ0UgCvmeqf2B5VKMgGySeMXGVfQKh0lDfww_F43vbwjg5Oep_fQQoFRdJ_Gqu8oH_S8me7ZwuoBMnfDwibBsc9ikIQXxzMxUep8BHBnCvF3KJA7OP1NCUVkzF36d1C2SEraJkNkR5Z7JZXTAUEWazVmVMmPLho8wt2E0mIsVoRO1aaiMBQNU7pdGKSu8dD-Grteng3pr9wrGYftebXOZ4j9zjDP51DCbzgH4pFy"/>
+<div class="flex-1 flex flex-col gap-sm">
+<textarea class="w-full bg-surface-container-low border border-outline-variant rounded-lg p-sm focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-body-md text-body-md resize-none" placeholder="Tulis balasan Anda..." rows="2"></textarea>
+<div class="flex justify-end">
+<button class="bg-primary text-on-primary px-lg py-xs rounded-lg font-label-md text-label-md hover:bg-surface-tint shadow-sm hover:shadow-md transition-all">Balas</button>
+</div>
+</div>
+</div>
+<!-- Comment Thread -->
+<div class="space-y-sm">
+<!-- Comment 1 -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant">
+<div class="flex gap-sm">
+<img alt="User Avatar" class="w-10 h-10 rounded-full object-cover" data-alt="A professional portrait of a young woman with a calm expression. Soft, bright lighting in a modern studio environment. Subdued, elegant color palette with a hint of deep navy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3xX6GILAf-gWZWtGWD0EeZcf4-CmeL3EaTwiNOVXO46T9sPjhh9kRmUzTJnpTLXtBkGGFeHhp7M4Rgklxb4GRAGEFjvFKXM3WyF6jKeLzHO9Jx_SaUjU_5grLbMvuMklgxAMIHeeV4d9WBqdrZCgRJ0zQr9dbR_ZM3kOuQAo2Yf5R0oo08a_V5YclslihZRM_xWxgLYOW-akeFJFV55al800TKw4NdiSRNlZ8E6pEMTIuA1LUobnGRRHyP75ooBsNl7GLVODKjrIM"/>
+<div class="flex-1">
+<div class="flex items-center gap-xs mb-1">
+<span class="font-label-md text-label-md font-bold text-on-surface">Tactical_Queen</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">• 1 jam yang lalu</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface">Terima kasih atas panduannya! Relic level 15 untuk support benar-benar membuat perbedaan. Akhirnya bisa lewat stage 1850.</p>
+<div class="flex gap-sm mt-sm">
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-primary font-label-sm text-label-sm transition-colors">
+<span class="material-symbols-outlined text-[16px]" data-icon="thumb_up">thumb_up</span> 14
+                                    </button>
+<button class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors">Reply</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Sidebar -->
+<aside class="w-full lg:w-80 space-y-lg flex-shrink-0">
+<!-- Community Stats -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-md shadow-level-1">
+<h4 class="font-headline-sm text-headline-sm text-on-surface mb-md pb-xs border-b border-surface-variant">Statistik Forum</h4>
+<ul class="space-y-sm font-body-sm text-body-sm text-on-surface-variant">
+<li class="flex justify-between items-center">
+<span class="flex items-center gap-xs"><span class="material-symbols-outlined text-[18px]" data-icon="group">group</span> Members Online</span>
+<span class="font-bold text-primary flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span> 4,201</span>
+</li>
+<li class="flex justify-between items-center">
+<span class="flex items-center gap-xs"><span class="material-symbols-outlined text-[18px]" data-icon="forum">forum</span> Total Threads</span>
+<span class="font-bold text-on-surface">12.5k</span>
+</li>
+</ul>
+</div>
+<!-- Related Threads -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-md shadow-level-1">
+<h4 class="font-headline-sm text-headline-sm text-on-surface mb-md pb-xs border-b border-surface-variant">Thread Terkait</h4>
+<div class="space-y-md">
+<a class="block group" href="#">
+<h5 class="font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors line-clamp-2">Meta Report: Vanguard Tier List Patch 4.2</h5>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs mt-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span> 850 views
+                        </div>
+</a>
+<a class="block group" href="#">
+<h5 class="font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors line-clamp-2">Diskusi: Bug Rotasi Skill Healer di Stage Tinggi</h5>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs mt-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="forum">forum</span> 45 replies
+                        </div>
+</a>
+</div>
+</div>
+</aside>
+</div>
+<!-- Footer -->
+<footer class="bg-surface-container-highest w-full py-xl mt-2xl border-t border-outline-variant/30">
+<div class="max-w-container-max mx-auto px-lg flex flex-col md:flex-row justify-between items-center gap-lg">
+<div class="font-headline-md text-headline-md text-primary">SKIA Hangout</div>
+<div class="flex gap-md font-body-sm text-body-sm text-on-surface-variant">
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-primary transition-colors" href="#">Community Guidelines</a>
+<a class="hover:text-primary transition-colors" href="#">Contact Support</a>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">© 2024 SKIA Hangout. Precision Tactical Gaming.</div>
+</div>
+</footer>
+</body></html>

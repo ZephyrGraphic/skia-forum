@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Compose Thread - SKIA Hangout</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#c1ecd4",
+                        "surface-container-low": "#f6f3f2",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface-variant": "#414844",
+                        "surface-variant": "#e5e2e1",
+                        "primary": "#012d1d",
+                        "on-primary-container": "#86af99",
+                        "outline-variant": "#c1c8c2",
+                        "inverse-on-surface": "#f3f0ef",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#54000a",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#3f6653",
+                        "tertiary-fixed-dim": "#ffb3b0",
+                        "on-error-container": "#93000a",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed-dim": "#a5d0b9",
+                        "surface-dim": "#dcd9d9",
+                        "surface-container-high": "#eae7e7",
+                        "secondary-fixed-dim": "#e9c349",
+                        "on-secondary-fixed-variant": "#574500",
+                        "surface-bright": "#fcf9f8",
+                        "inverse-primary": "#a5d0b9",
+                        "on-primary-fixed-variant": "#274e3d",
+                        "secondary-container": "#fed65b",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#ffdad8",
+                        "on-surface": "#1b1b1c",
+                        "secondary": "#735c00",
+                        "primary-container": "#1b4332",
+                        "on-error": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-container": "#ff807d",
+                        "secondary-fixed": "#ffe088",
+                        "on-background": "#1b1b1c",
+                        "on-secondary-fixed": "#241a00",
+                        "on-tertiary-fixed-variant": "#8c1520",
+                        "surface-container": "#f0eded",
+                        "inverse-surface": "#303030",
+                        "on-secondary-container": "#745c00",
+                        "surface": "#fcf9f8",
+                        "on-tertiary-fixed": "#410006",
+                        "on-primary-fixed": "#002114",
+                        "background": "#fcf9f8",
+                        "outline": "#717973",
+                        "surface-container-highest": "#e5e2e1",
+                        "tertiary-container": "#7c0516"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xs": "8px",
+                        "lg": "40px",
+                        "md": "24px",
+                        "container-max": "1280px",
+                        "gutter": "20px",
+                        "sm": "16px",
+                        "xl": "64px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter", "sans-serif"],
+                        "label-md": ["Inter", "sans-serif"],
+                        "headline-lg-mobile": ["Inter", "sans-serif"],
+                        "body-lg": ["Inter", "sans-serif"],
+                        "meta-sm": ["Inter", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"],
+                        "headline-lg": ["Inter", "sans-serif"],
+                        "headline-md": ["Inter", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-md": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "meta-sm": ["12px", { "lineHeight": "1.4", "fontWeight": "400" }],
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-md": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md min-h-screen flex flex-col antialiased">
+<!-- TopNavBar -->
+<header class="bg-surface docked full-width top-0 sticky z-50 border-b border-outline-variant flat no shadows">
+<div class="flex justify-between items-center w-full px-md h-16 max-w-container-max mx-auto">
+<div class="flex items-center gap-md">
+<a class="font-headline-lg text-headline-lg font-bold text-primary" href="#">SKIA Hangout</a>
+<div class="hidden md:flex items-center relative ml-md">
+<span class="material-symbols-outlined absolute left-sm text-outline" data-icon="search">search</span>
+<input class="bg-surface-container-lowest border border-outline-variant rounded-full py-[6px] pl-lg pr-md text-body-md focus:border-primary focus:ring-0 w-64 transition-colors" placeholder="Search forum..." type="text"/>
+</div>
+</div>
+<nav class="hidden md:flex items-center gap-md">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low px-sm py-[6px] rounded-lg" href="#">Diskusi</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low px-sm py-[6px] rounded-lg" href="#">Guide</a>
+</nav>
+<div class="flex items-center gap-sm">
+<a class="hidden md:flex items-center justify-center bg-primary text-on-primary font-label-md text-label-md rounded-lg px-sm py-[8px] hover:bg-primary-container transition-all" href="#">Buat</a>
+<button class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant hover:opacity-80 transition-opacity">
+<img alt="User Profile Avatar" class="w-full h-full object-cover" data-alt="A close-up portrait of a user avatar, featuring a confident expression. The lighting is soft and natural, emphasizing a modern, professional yet approachable vibe suitable for a strategic community forum profile." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlidX9LjCRgblc6nZCcniCtBB8KdODxwPrfg8Y2A3-otmeuRPTWhE8jCDdPdb7KgxaSUmPv4TsHpC3IkIejH_ZPifKKTp602xyr9cdeFPrxML31jdlD8csL9pY8yPFrXN7i-4Sxicd3QvFx_uTByoJIE8sf7V1LA7fK5cun8a1ZiJM0WE7ly3r3GCguHlG4fF2tk81QUiX_rEkPBzvgUlpM9F7LPj8TKKFlgXU1ZPHX5hGkTV_sR4idPPiuGgJzCkr-b-MP104EP6m"/>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Layout -->
+<div class="flex-1 w-full max-w-container-max mx-auto flex relative">
+<!-- SideNavBar -->
+<aside class="bg-surface h-screen w-64 hidden lg:flex flex-col sticky top-16 border-r border-outline-variant p-md gap-xs flat no shadows">
+<div class="mb-sm px-xs">
+<h2 class="text-headline-md font-headline-md text-primary">Categories</h2>
+<p class="font-meta-sm text-meta-sm text-on-surface-variant mt-1">Browse Forum</p>
+</div>
+<nav class="flex flex-col gap-[2px]">
+<a class="flex items-center gap-sm px-xs py-[8px] rounded-lg text-on-surface-variant hover:bg-surface-container-highest hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="forum">forum</span>
+<span class="font-label-md text-label-md">General</span>
+</a>
+<a class="flex items-center gap-sm px-xs py-[8px] rounded-lg text-on-surface-variant hover:bg-surface-container-highest hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="auto_stories">auto_stories</span>
+<span class="font-label-md text-label-md">Guide &amp; Build</span>
+</a>
+<a class="flex items-center gap-sm px-xs py-[8px] rounded-lg text-on-surface-variant hover:bg-surface-container-highest hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="help_center">help_center</span>
+<span class="font-label-md text-label-md">Tanya Jawab</span>
+</a>
+<a class="flex items-center gap-sm px-xs py-[8px] rounded-lg text-on-surface-variant hover:bg-surface-container-highest hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="groups">groups</span>
+<span class="font-label-md text-label-md">Guild &amp; Party</span>
+</a>
+<a class="flex items-center gap-sm px-xs py-[8px] rounded-lg text-on-surface-variant hover:bg-surface-container-highest hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="newspaper">newspaper</span>
+<span class="font-label-md text-label-md">Patch &amp; News</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 p-sm md:p-xl flex justify-center items-start">
+<!-- Composer Form Container -->
+<div class="w-full max-w-3xl bg-surface-container-lowest border border-outline-variant rounded-xl p-md md:p-lg">
+<header class="mb-lg border-b border-surface-variant pb-sm">
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary">Buat Thread Baru</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-xs">Bagikan strategi, pertanyaan, atau panduan dengan komunitas.</p>
+</header>
+<form class="flex flex-col gap-md">
+<!-- Judul Thread -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase" for="judul">Judul Thread</label>
+<input class="w-full bg-surface border border-outline-variant rounded-lg px-sm py-[10px] font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-colors outline-none" id="judul" placeholder="Contoh: Build optimal untuk Hero X di Patch 1.2" type="text"/>
+</div>
+<!-- Dropdowns Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Kategori -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase" for="kategori">Pilih Kategori</label>
+<div class="relative">
+<select class="w-full bg-surface border border-outline-variant rounded-lg px-sm py-[10px] font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-colors outline-none appearance-none cursor-pointer" id="kategori">
+<option disabled="" selected="" value="">Pilih Kategori...</option>
+<option value="general">General</option>
+<option value="guide">Guide</option>
+<option value="news">News</option>
+<option value="qna">Tanya Jawab</option>
+</select>
+<span class="material-symbols-outlined absolute right-sm top-1/2 -translate-y-1/2 pointer-events-none text-outline-variant" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<!-- Tipe Thread -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase" for="tipe">Tipe Thread</label>
+<div class="relative">
+<select class="w-full bg-surface border border-outline-variant rounded-lg px-sm py-[10px] font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-colors outline-none appearance-none cursor-pointer" id="tipe">
+<option disabled="" selected="" value="">Pilih Tipe...</option>
+<option value="discussion">Discussion</option>
+<option value="guide">Guide</option>
+<option value="question">Question</option>
+<option value="recruitment">Recruitment</option>
+</select>
+<span class="material-symbols-outlined absolute right-sm top-1/2 -translate-y-1/2 pointer-events-none text-outline-variant" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Konten Editor -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase" for="konten">Konten</label>
+<div class="border border-outline-variant rounded-lg overflow-hidden flex flex-col focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-colors bg-surface">
+<!-- Formatting Toolbar -->
+<div class="bg-surface-container-low border-b border-outline-variant flex items-center px-sm py-xs gap-sm overflow-x-auto">
+<button aria-label="Bold" class="text-on-surface-variant hover:text-primary p-1 rounded hover:bg-surface-variant transition-colors flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="format_bold">format_bold</span>
+</button>
+<button aria-label="Italic" class="text-on-surface-variant hover:text-primary p-1 rounded hover:bg-surface-variant transition-colors flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="format_italic">format_italic</span>
+</button>
+<button aria-label="Underline" class="text-on-surface-variant hover:text-primary p-1 rounded hover:bg-surface-variant transition-colors flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="format_underlined">format_underlined</span>
+</button>
+<div class="w-px h-4 bg-outline-variant mx-[2px]"></div>
+<button aria-label="Insert Link" class="text-on-surface-variant hover:text-primary p-1 rounded hover:bg-surface-variant transition-colors flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="link">link</span>
+</button>
+<button aria-label="Insert Image" class="text-on-surface-variant hover:text-primary p-1 rounded hover:bg-surface-variant transition-colors flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="image">image</span>
+</button>
+<button aria-label="Insert Code" class="text-on-surface-variant hover:text-primary p-1 rounded hover:bg-surface-variant transition-colors flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="code">code</span>
+</button>
+</div>
+<!-- Textarea -->
+<textarea class="w-full bg-transparent border-none p-sm font-body-md text-body-md text-on-surface resize-y outline-none focus:ring-0" id="konten" placeholder="Tulis strategi, pertanyaan, atau insight kamu di sini..." rows="10"></textarea>
+</div>
+</div>
+<!-- Tag -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase" for="tags">Tag</label>
+<input class="w-full bg-surface border border-outline-variant rounded-lg px-sm py-[10px] font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-colors outline-none" id="tags" placeholder="Misal: Build, Hero, Tips (Pisahkan dengan koma)" type="text"/>
+</div>
+<!-- Actions -->
+<div class="flex justify-end items-center gap-md mt-sm pt-md border-t border-surface-variant">
+<button class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors px-sm py-[10px]" type="button">
+                            Batal
+                        </button>
+<button class="bg-primary text-on-primary font-label-md text-label-md rounded-lg px-lg py-[10px] hover:bg-primary-container transition-colors shadow-sm flex items-center gap-xs" type="submit">
+<span class="material-symbols-outlined text-[18px]" data-icon="send">send</span>
+                            Posting Sekarang
+                        </button>
+</div>
+</form>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest w-full py-lg mt-xl border-t border-outline-variant flat no shadows">
+<div class="max-w-container-max mx-auto px-md flex flex-col md:flex-row justify-between items-center gap-md">
+<div class="font-headline-md text-headline-md text-primary">SKIA Hangout</div>
+<div class="font-body-md text-body-md text-on-surface-variant">© 2024 SKIA Hangout. Dedicated to Idle RPG Strategy.</div>
+<nav class="flex gap-md font-meta-sm text-meta-sm">
+<a class="text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">About</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Rules</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Privacy</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Terms</a>
+</nav>
+</div>
+</footer>
+</body></html>

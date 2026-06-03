@@ -5,6 +5,7 @@ import { Eye, MessageCircle } from "lucide-react";
 
 import { Avatar } from "@/components/avatar";
 import { CommentForm } from "@/components/comment-form";
+import { DeletePostForm } from "@/components/delete-post-form";
 import { EngagementBar } from "@/components/engagement-bar";
 import { UserLabels } from "@/components/user-labels";
 import { prisma } from "@/lib/prisma";
@@ -49,7 +50,16 @@ export default async function ThreadPage({ params }: ThreadPageProps) {
     prisma.post.findUnique({
       where: { slug },
       include: {
-        author: { select: { name: true, image: true, role: true, badge: true } },
+        author: {
+          select: {
+            id: true,
+            name: true,
+            username: true,
+            image: true,
+            role: true,
+            badge: true,
+          },
+        },
         category: { select: { name: true, slug: true, accent: true } },
         postTags: {
           include: { tag: { select: { name: true, slug: true } } },
@@ -58,7 +68,15 @@ export default async function ThreadPage({ params }: ThreadPageProps) {
           orderBy: { createdAt: "asc" },
           take: 100,
           include: {
-            author: { select: { name: true, image: true, role: true, badge: true } },
+            author: {
+              select: {
+                name: true,
+                username: true,
+                image: true,
+                role: true,
+                badge: true,
+              },
+            },
           },
         },
         _count: {
@@ -91,6 +109,9 @@ export default async function ThreadPage({ params }: ThreadPageProps) {
   });
 
   const [reaction, bookmark] = userState;
+  const authorName = post.author.username ?? "Member";
+  const canDeletePost =
+    userId === post.author.id || session?.user?.role === "ADMIN";
 
   return (
     <main className="container thread-layout">
@@ -110,9 +131,9 @@ export default async function ThreadPage({ params }: ThreadPageProps) {
         <h1>{post.title}</h1>
 
         <div className="thread-author">
-          <Avatar image={post.author.image} name={post.author.name} />
+          <Avatar image={post.author.image} name={authorName} />
           <span>
-            <strong>{post.author.name ?? "Member"}</strong>
+            <strong>{authorName}</strong>
             <UserLabels badge={post.author.badge} role={post.author.role} />
             <small>{timeAgo(post.createdAt)}</small>
           </span>
@@ -161,6 +182,15 @@ export default async function ThreadPage({ params }: ThreadPageProps) {
         <Link className="button button-muted" href="/compose">
           Buat Thread Baru
         </Link>
+        {canDeletePost ? (
+          <DeletePostForm
+            postId={post.id}
+            returnTo="/"
+            buttonLabel="Hapus Thread"
+            variant="full"
+            pathname={`/p/${post.slug}`}
+          />
+        ) : null}
       </aside>
 
       <section className="comments-section" id="comments">
@@ -174,11 +204,14 @@ export default async function ThreadPage({ params }: ThreadPageProps) {
         <div className="comment-list">
           {post.comments.map((comment) => (
             <article className="comment-card" key={comment.id}>
-              <Avatar image={comment.author.image} name={comment.author.name} />
+              <Avatar
+                image={comment.author.image}
+                name={comment.author.username ?? "Member"}
+              />
               <div>
                 <div className="comment-head">
                   <span>
-                    <strong>{comment.author.name ?? "Member"}</strong>
+                    <strong>{comment.author.username ?? "Member"}</strong>
                     <UserLabels
                       badge={comment.author.badge}
                       role={comment.author.role}
@@ -195,6 +228,7 @@ export default async function ThreadPage({ params }: ThreadPageProps) {
         <CommentForm
           isLoggedIn={Boolean(userId)}
           isBanned={isBanned}
+          needsProfile={Boolean(userId && !session?.user?.username)}
           pathname={`/p/${post.slug}#comments`}
           postId={post.id}
         />

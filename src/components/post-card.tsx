@@ -1,15 +1,15 @@
 import Link from "next/link";
 import {
   Bookmark,
+  ChevronDown,
+  ChevronUp,
   Eye,
   MessageCircle,
   Pin,
   Sparkles,
-  ThumbsUp,
 } from "lucide-react";
 
 import { Avatar } from "@/components/avatar";
-import { UserLabels } from "@/components/user-labels";
 import type { ForumPost } from "@/lib/forum-types";
 import {
   cn,
@@ -25,12 +25,19 @@ type PostCardProps = {
 };
 
 export function PostCard({ post }: PostCardProps) {
+  const authorName = post.author.username ?? "Member";
+
   return (
     <article
       className={cn("post-card", post.pinned && "post-card-pinned")}
       style={{ "--accent": post.category.accent } as React.CSSProperties}
     >
       <div className="post-card-accent" />
+      <div className="vote-rail">
+        <ChevronUp size={20} />
+        <strong>{formatNumber(post._count.reactions)}</strong>
+        <ChevronDown size={20} />
+      </div>
       <div className="post-card-main">
         <div className="post-meta-row">
           <Link
@@ -54,6 +61,11 @@ export function PostCard({ post }: PostCardProps) {
               Sorotan
             </span>
           ) : null}
+          <span className="thread-author-inline">
+            <Avatar image={post.author.image} name={authorName} size="sm" />
+            {authorName}
+          </span>
+          <span className="time-label">{timeAgo(post.createdAt)}</span>
         </div>
 
         <Link className="post-title-link" href={`/p/${post.slug}`}>
@@ -61,38 +73,18 @@ export function PostCard({ post }: PostCardProps) {
         </Link>
         <p>{excerpt(post.body)}</p>
 
-        <div className="tag-row">
-          {post.postTags.map(({ tag }) => (
-            <Link href={`/?tag=${tag.slug}`} key={tag.slug}>
-              #{tag.name}
-            </Link>
-          ))}
-        </div>
-      </div>
-
-      <div className="post-card-side">
-        <div className="author-line">
-          <Avatar image={post.author.image} name={post.author.name} size="sm" />
-          <span>{post.author.name ?? "Member"}</span>
-        </div>
-        <UserLabels badge={post.author.badge} role={post.author.role} />
-        <span className="time-label">{timeAgo(post.createdAt)}</span>
-        <div className="metric-grid">
+        <div className="post-action-row">
           <span>
-            <MessageCircle size={15} />
-            {formatNumber(post._count.comments)}
+            <MessageCircle size={17} />
+            {formatNumber(post._count.comments)} Komentar
           </span>
           <span>
-            <ThumbsUp size={15} />
-            {formatNumber(post._count.reactions)}
+            <Eye size={17} />
+            {formatNumber(post.views)} Dilihat
           </span>
-          <span>
-            <Bookmark size={15} />
-            {formatNumber(post._count.bookmarks)}
-          </span>
-          <span>
-            <Eye size={15} />
-            {formatNumber(post.views)}
+          <span className="save-action">
+            <Bookmark size={17} />
+            Simpan
           </span>
         </div>
       </div>

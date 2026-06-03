@@ -2,7 +2,9 @@ import Link from "next/link";
 import {
   BookOpen,
   CircleHelp,
+  Home,
   Newspaper,
+  Plus,
   Shield,
   Sparkles,
 } from "lucide-react";
@@ -26,8 +28,14 @@ type CategoryNavProps = {
 export function CategoryNav({ categories, activeSlug }: CategoryNavProps) {
   return (
     <aside className="category-panel">
-      <div className="panel-heading">
-        <span>Kategori</span>
+      <div className="commander-card">
+        <span className="commander-avatar">
+          <Shield size={24} />
+        </span>
+        <span>
+          <strong>Tactical Command</strong>
+          <small>Elite Member</small>
+        </span>
       </div>
       <div className="category-list">
         <Link
@@ -35,11 +43,11 @@ export function CategoryNav({ categories, activeSlug }: CategoryNavProps) {
           href="/"
         >
           <span className="category-icon all">
-            <Sparkles size={17} />
+            <Home size={18} />
           </span>
           <span>
-            <strong>Semua Thread</strong>
-            <small>Seluruh board</small>
+            <strong>Home</strong>
+            <small>Semua Thread</small>
           </span>
         </Link>
         {categories.map((category) => {
@@ -66,6 +74,10 @@ export function CategoryNav({ categories, activeSlug }: CategoryNavProps) {
           );
         })}
       </div>
+      <Link className="button button-primary sidebar-compose" href="/compose">
+        <Plus size={18} />
+        Post Thread
+      </Link>
     </aside>
   );
 }

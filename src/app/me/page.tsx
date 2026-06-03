@@ -1,14 +1,16 @@
 import Link from "next/link";
-import { Bookmark, LogIn, MessageSquare } from "lucide-react";
+import { redirect } from "next/navigation";
+import { Bookmark, Edit3, LogIn, MessageSquare } from "lucide-react";
 
 import { Avatar } from "@/components/avatar";
-import { PostCard } from "@/components/post-card";
+import { ProfilePostRow } from "@/components/profile-post-row";
 import { UserLabels } from "@/components/user-labels";
 import { isGoogleAuthConfigured } from "@/lib/auth";
-import { loginPath } from "@/lib/auth-routes";
+import { loginPath, usernameSetupPath } from "@/lib/auth-routes";
 import type { ForumPost } from "@/lib/forum-types";
 import { prisma } from "@/lib/prisma";
 import { getOptionalSession } from "@/lib/session";
+import { formatNumber } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -35,13 +37,39 @@ export default async function MePage() {
     );
   }
 
-  const [posts, bookmarks] = await Promise.all([
+  const [profile, posts, bookmarks] = await Promise.all([
+    prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: {
+        badge: true,
+        bio: true,
+        email: true,
+        image: true,
+        role: true,
+        username: true,
+        _count: {
+          select: {
+            bookmarks: true,
+            comments: true,
+            posts: true,
+          },
+        },
+      },
+    }),
     prisma.post.findMany({
       where: { authorId: session.user.id },
       orderBy: { createdAt: "desc" },
       take: 24,
       include: {
-        author: { select: { name: true, image: true, role: true, badge: true } },
+        author: {
+          select: {
+            name: true,
+            username: true,
+            image: true,
+            role: true,
+            badge: true,
+          },
+        },
         category: { select: { name: true, slug: true, accent: true } },
         postTags: {
           include: { tag: { select: { name: true, slug: true } } },
@@ -58,7 +86,15 @@ export default async function MePage() {
       include: {
         post: {
           include: {
-            author: { select: { name: true, image: true, role: true, badge: true } },
+            author: {
+              select: {
+                name: true,
+                username: true,
+                image: true,
+                role: true,
+                badge: true,
+              },
+            },
             category: { select: { name: true, slug: true, accent: true } },
             postTags: {
               include: { tag: { select: { name: true, slug: true } } },
@@ -72,20 +108,62 @@ export default async function MePage() {
     }),
   ]);
 
+  if (!profile?.username) {
+    redirect(usernameSetupPath("/me"));
+  }
+
+  const totalReactions = posts.reduce(
+    (total, post) => total + post._count.reactions,
+    0,
+  );
+
   return (
     <main className="container profile-page">
       <section className="profile-hero">
-        <Avatar image={session.user.image} name={session.user.name} size="lg" />
-        <div>
+        <Avatar image={profile.image} name={profile.username} size="lg" />
+        <div className="profile-hero-main">
           <span className="eyebrow">Member area</span>
-          <h1>{session.user.name ?? "Member SKIA"}</h1>
-          <UserLabels badge={session.user.badge} role={session.user.role} />
-          <p>{session.user.email}</p>
+          <div className="profile-title-row">
+            <h1>{profile.username}</h1>
+            <UserLabels badge={profile.badge} role={profile.role} />
+          </div>
+          <p>
+            {profile.bio ??
+              "Belum ada bio. Tambahkan sedikit konteks supaya member lain mengenal gaya mainmu."}
+          </p>
+          <div className="profile-stat-row">
+            <span>
+              <strong>{formatNumber(profile._count.posts)}</strong>
+              Thread
+            </span>
+            <span>
+              <strong>{formatNumber(totalReactions)}</strong>
+              Upvote
+            </span>
+            <span>
+              <strong>{formatNumber(profile._count.bookmarks)}</strong>
+              Bookmark
+            </span>
+          </div>
         </div>
+        <Link
+          className="button button-muted profile-edit-button"
+          href="/auth/username?callbackUrl=%2Fme&edit=1"
+        >
+          <Edit3 size={17} />
+          Edit Profile
+        </Link>
       </section>
 
+      <nav className="profile-tabs" aria-label="Bagian profil">
+        <a className="is-active" href="#posts">
+          Postingan Saya
+        </a>
+        <a href="#bookmarks">Simpanan</a>
+      </nav>
+
       <section className="profile-grid">
-        <div className="profile-column">
+        <div className="profile-column" id="posts">
           <div className="feed-heading">
             <div>
               <span className="eyebrow">Kontribusi</span>
@@ -98,7 +176,11 @@ export default async function MePage() {
           <div className="post-list">
             {posts.length ? (
               posts.map((post) => (
-                <PostCard key={post.id} post={post as ForumPost} />
+                <ProfilePostRow
+                  canDelete
+                  key={post.id}
+                  post={post as ForumPost}
+                />
               ))
             ) : (
               <div className="muted-box">Belum membuat thread.</div>
@@ -106,7 +188,7 @@ export default async function MePage() {
           </div>
         </div>
 
-        <div className="profile-column">
+        <div className="profile-column" id="bookmarks">
           <div className="feed-heading">
             <div>
               <span className="eyebrow">Tersimpan</span>
@@ -119,7 +201,7 @@ export default async function MePage() {
           <div className="post-list">
             {bookmarks.length ? (
               bookmarks.map((bookmark) => (
-                <PostCard
+                <ProfilePostRow
                   key={bookmark.id}
                   post={bookmark.post as ForumPost}
                 />

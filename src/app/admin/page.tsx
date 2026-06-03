@@ -136,14 +136,15 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         {sortedUsers.map((user) => {
           const isSelf = user.id === admin.id;
           const isProtected = isProtectedAdminEmail(user.email);
+          const displayName = user.username ?? "Member";
 
           return (
             <article className="admin-user-card" key={user.id}>
               <div className="admin-user-main">
-                <Avatar image={user.image} name={user.name} />
+                <Avatar image={user.image} name={displayName} />
                 <div>
                   <div className="admin-user-title">
-                    <strong>{user.name ?? "Member"}</strong>
+                    <strong>{displayName}</strong>
                     <UserLabels badge={user.badge} role={user.role} />
                   </div>
                   <p>{user.email ?? "Email tidak tersedia"}</p>

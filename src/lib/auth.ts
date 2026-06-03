@@ -39,6 +39,8 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: "database",
+    maxAge: 60 * 60 * 24 * 7,
+    updateAge: 60 * 60 * 24,
   },
   providers: [
     GoogleProvider({
@@ -47,6 +49,29 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
+    async signIn({ user }) {
+      if (!user.email) {
+        return false;
+      }
+
+      const existingUser = await prisma.user.findUnique({
+        where: { email: user.email },
+        select: { bannedAt: true, role: true },
+      });
+
+      if (existingUser?.bannedAt) {
+        return "/auth/error?error=Banned";
+      }
+
+      if (isAdminEmail(user.email) && existingUser?.role !== "ADMIN") {
+        await prisma.user.updateMany({
+          where: { email: user.email },
+          data: { role: "ADMIN" },
+        });
+      }
+
+      return true;
+    },
     redirect({ url, baseUrl }) {
       if (url.startsWith("/")) {
         return `${baseUrl}${url}`;
@@ -69,10 +94,15 @@ export const authOptions: NextAuthOptions = {
         const appUser = user as typeof user & {
           badge?: string | null;
           bannedAt?: Date | null;
+          bio?: string | null;
           role?: string | null;
+          username?: string | null;
         };
 
         session.user.id = user.id;
+        session.user.name = appUser.username ?? null;
+        session.user.username = appUser.username ?? null;
+        session.user.bio = appUser.bio ?? null;
         session.user.role = isAdminEmail(user.email)
           ? "ADMIN"
           : appUser.role ?? "MEMBER";

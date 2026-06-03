@@ -1,13 +1,14 @@
 import { Send } from "lucide-react";
 
 import { createCommentAction } from "@/lib/actions";
-import { loginPath } from "@/lib/auth-routes";
+import { loginPath, usernameSetupPath } from "@/lib/auth-routes";
 
 type CommentFormProps = {
   postId: string;
   isLoggedIn: boolean;
   isBanned: boolean;
   pathname: string;
+  needsProfile?: boolean;
 };
 
 export function CommentForm({
@@ -15,6 +16,7 @@ export function CommentForm({
   isLoggedIn,
   isBanned,
   pathname,
+  needsProfile = false,
 }: CommentFormProps) {
   if (isBanned) {
     return (
@@ -30,6 +32,17 @@ export function CommentForm({
         <strong>Login Google untuk ikut berdiskusi.</strong>
         <a className="button button-primary" href={loginPath(pathname)}>
           Login
+        </a>
+      </div>
+    );
+  }
+
+  if (needsProfile) {
+    return (
+      <div className="reply-box muted-box">
+        <strong>Lengkapi username forum sebelum ikut berdiskusi.</strong>
+        <a className="button button-primary" href={usernameSetupPath(pathname)}>
+          Lengkapi Profil
         </a>
       </div>
     );

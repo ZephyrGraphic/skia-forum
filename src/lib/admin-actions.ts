@@ -11,6 +11,7 @@ import {
   normalizeRole,
 } from "@/lib/admin-config";
 import { prisma } from "@/lib/prisma";
+import { enforceRateLimit, RateLimitError } from "@/lib/rate-limit";
 
 const roleSchema = z.object({
   badge: z.string().trim().max(32).optional(),
@@ -47,8 +48,26 @@ async function getTargetUser(userId: string) {
   });
 }
 
+async function enforceAdminActionRateLimit(adminId: string, scope: string) {
+  try {
+    await enforceRateLimit({
+      identity: adminId,
+      limit: 30,
+      scope,
+      windowMs: 10 * 60 * 1000,
+    });
+  } catch (error) {
+    if (error instanceof RateLimitError) {
+      adminRedirect("error", error.message);
+    }
+
+    throw error;
+  }
+}
+
 export async function updateUserRoleAction(formData: FormData) {
-  await requireAdminUser();
+  const admin = await requireAdminUser();
+  await enforceAdminActionRateLimit(admin.id, "admin:role");
   const result = roleSchema.safeParse({
     badge: formData.get("badge") ?? "",
     role: formData.get("role"),
@@ -84,6 +103,7 @@ export async function updateUserRoleAction(formData: FormData) {
 
 export async function banUserAction(formData: FormData) {
   const admin = await requireAdminUser();
+  await enforceAdminActionRateLimit(admin.id, "admin:ban");
   const result = banSchema.safeParse({
     reason: formData.get("reason") ?? "",
     userId: formData.get("userId"),
@@ -120,7 +140,8 @@ export async function banUserAction(formData: FormData) {
 }
 
 export async function unbanUserAction(formData: FormData) {
-  await requireAdminUser();
+  const admin = await requireAdminUser();
+  await enforceAdminActionRateLimit(admin.id, "admin:unban");
   const userId = String(formData.get("userId") ?? "");
 
   if (!userId) {
@@ -141,6 +162,7 @@ export async function unbanUserAction(formData: FormData) {
 
 export async function deleteUserAction(formData: FormData) {
   const admin = await requireAdminUser();
+  await enforceAdminActionRateLimit(admin.id, "admin:delete");
   const result = deleteSchema.safeParse({
     confirm: formData.get("confirm"),
     userId: formData.get("userId"),

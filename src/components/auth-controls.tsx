@@ -5,10 +5,12 @@ import { LogIn, LogOut, Settings } from "lucide-react";
 import { signOut } from "next-auth/react";
 
 import { Avatar } from "@/components/avatar";
+import { usernameSetupPath } from "@/lib/auth-routes";
 
 type AuthControlsProps = {
   user?: {
     name?: string | null;
+    username?: string | null;
     image?: string | null;
     email?: string | null;
   };
@@ -17,11 +19,14 @@ type AuthControlsProps = {
 
 export function AuthControls({ user, canUseGoogle }: AuthControlsProps) {
   if (user) {
+    const displayName = user.username ?? user.name;
+    const profileHref = displayName ? "/me" : usernameSetupPath("/me");
+
     return (
       <div className="auth-cluster">
-        <Link className="user-chip" href="/me">
-          <Avatar image={user.image} name={user.name} size="sm" />
-          <span>{user.name ?? "Member"}</span>
+        <Link className="user-chip" href={profileHref}>
+          <Avatar image={user.image} name={displayName} size="sm" />
+          <span>{displayName ?? "Lengkapi profil"}</span>
         </Link>
         <button
           className="icon-button"

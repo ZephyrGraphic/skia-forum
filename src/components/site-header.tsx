@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MessageSquare, Plus, Search, Shield } from "lucide-react";
+import { Bell, BookOpen, MessageSquare, Plus, Shield, UserRound } from "lucide-react";
 
 import { AuthControls } from "@/components/auth-controls";
 import { isAdminEmail } from "@/lib/admin-config";
@@ -27,15 +27,19 @@ export async function SiteHeader() {
         <nav className="main-nav" aria-label="Navigasi utama">
           <Link href="/?type=DISCUSSION">
             <MessageSquare size={17} />
-            Diskusi
+            Forums
           </Link>
           <Link href="/?type=GUIDE">
-            <Search size={17} />
-            Guide
+            <BookOpen size={17} />
+            Guides
+          </Link>
+          <Link href="/me">
+            <UserRound size={17} />
+            Members
           </Link>
           <Link href="/compose">
             <Plus size={17} />
-            Buat
+            Post
           </Link>
           {isAdmin ? (
             <Link href="/admin">
@@ -44,6 +48,10 @@ export async function SiteHeader() {
             </Link>
           ) : null}
         </nav>
+
+        <div className="header-tools" aria-hidden="true">
+          <Bell size={21} />
+        </div>
 
         <AuthControls
           canUseGoogle={isGoogleAuthConfigured}

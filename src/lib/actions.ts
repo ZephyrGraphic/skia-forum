@@ -6,8 +6,13 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 
 import { authOptions } from "@/lib/auth";
-import { loginPath, safeReturnPath } from "@/lib/auth-routes";
+import {
+  loginPath,
+  safeReturnPath,
+  usernameSetupPath,
+} from "@/lib/auth-routes";
 import { prisma } from "@/lib/prisma";
+import { enforceRateLimit, RateLimitError } from "@/lib/rate-limit";
 import { parseTags, slugify } from "@/lib/utils";
 
 const postSchema = z.object({
@@ -23,7 +28,30 @@ const commentSchema = z.object({
   body: z.string().trim().min(3).max(1600),
 });
 
-async function requireUserId(callbackUrl = "/") {
+const usernamePattern = /^[A-Za-z0-9][A-Za-z0-9_.-]{2,23}$/;
+
+const profileSchema = z.object({
+  bio: z.string().trim().max(180).optional(),
+  callbackUrl: z.string().optional(),
+  username: z
+    .string()
+    .trim()
+    .min(3)
+    .max(24)
+    .regex(usernamePattern),
+});
+
+const deletePostSchema = z.object({
+  pathname: z.string().optional(),
+  postId: z.string().trim().min(1),
+  returnTo: z.string().optional(),
+});
+
+type RequireUserOptions = {
+  requireUsername?: boolean;
+};
+
+async function requireUser(callbackUrl = "/", options: RequireUserOptions = {}) {
   let session;
 
   try {
@@ -38,7 +66,7 @@ async function requireUserId(callbackUrl = "/") {
 
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
-    select: { bannedAt: true },
+    select: { bannedAt: true, username: true },
   });
 
   if (user?.bannedAt) {
@@ -47,7 +75,27 @@ async function requireUserId(callbackUrl = "/") {
     );
   }
 
-  return session.user.id;
+  if (!user) {
+    redirect(loginPath(callbackUrl));
+  }
+
+  if (options.requireUsername !== false && !user.username) {
+    redirect(usernameSetupPath(callbackUrl));
+  }
+
+  return {
+    id: session.user.id,
+    role: session.user.role ?? "MEMBER",
+  };
+}
+
+async function requireUserId(
+  callbackUrl = "/",
+  options: RequireUserOptions = {},
+) {
+  const user = await requireUser(callbackUrl, options);
+
+  return user.id;
 }
 
 async function uniquePostSlug(title: string) {
@@ -65,6 +113,21 @@ async function uniquePostSlug(title: string) {
 
 export async function createPostAction(formData: FormData) {
   const userId = await requireUserId("/compose");
+  try {
+    await enforceRateLimit({
+      identity: userId,
+      limit: 4,
+      scope: "post:create",
+      windowMs: 10 * 60 * 1000,
+    });
+  } catch (error) {
+    if (error instanceof RateLimitError) {
+      redirect(`/compose?error=${encodeURIComponent(error.message)}`);
+    }
+
+    throw error;
+  }
+
   const result = postSchema.safeParse({
     title: formData.get("title"),
     body: formData.get("body"),
@@ -139,6 +202,20 @@ export async function createCommentAction(formData: FormData) {
   }
 
   const userId = await requireUserId(`/p/${post.slug}#comments`);
+  try {
+    await enforceRateLimit({
+      identity: userId,
+      limit: 12,
+      scope: "comment:create",
+      windowMs: 10 * 60 * 1000,
+    });
+  } catch (error) {
+    if (error instanceof RateLimitError) {
+      redirect(`/p/${post.slug}#comments`);
+    }
+
+    throw error;
+  }
 
   await prisma.comment.create({
     data: {
@@ -158,6 +235,30 @@ export async function toggleReactionAction(formData: FormData) {
   const userId = await requireUserId(pathname);
 
   if (!postId) {
+    redirect(pathname);
+  }
+
+  try {
+    await enforceRateLimit({
+      identity: userId,
+      limit: 60,
+      scope: "reaction:toggle",
+      windowMs: 10 * 60 * 1000,
+    });
+  } catch (error) {
+    if (error instanceof RateLimitError) {
+      redirect(pathname);
+    }
+
+    throw error;
+  }
+
+  const post = await prisma.post.findUnique({
+    where: { id: postId },
+    select: { id: true },
+  });
+
+  if (!post) {
     redirect(pathname);
   }
 
@@ -194,6 +295,30 @@ export async function toggleBookmarkAction(formData: FormData) {
     redirect(pathname);
   }
 
+  try {
+    await enforceRateLimit({
+      identity: userId,
+      limit: 60,
+      scope: "bookmark:toggle",
+      windowMs: 10 * 60 * 1000,
+    });
+  } catch (error) {
+    if (error instanceof RateLimitError) {
+      redirect(pathname);
+    }
+
+    throw error;
+  }
+
+  const post = await prisma.post.findUnique({
+    where: { id: postId },
+    select: { id: true },
+  });
+
+  if (!post) {
+    redirect(pathname);
+  }
+
   const existing = await prisma.bookmark.findUnique({
     where: {
       userId_postId: {
@@ -217,4 +342,124 @@ export async function toggleBookmarkAction(formData: FormData) {
   revalidatePath(pathname);
   revalidatePath("/me");
   redirect(pathname);
+}
+
+function profileFormPath(
+  callbackUrl: string,
+  type?: "error" | "notice",
+  message?: string,
+) {
+  const params = new URLSearchParams({
+    callbackUrl: safeReturnPath(callbackUrl),
+  });
+
+  if (type && message) {
+    params.set(type, message);
+  }
+
+  return `/auth/username?${params.toString()}`;
+}
+
+export async function updateProfileAction(formData: FormData) {
+  const callbackUrl = safeReturnPath(
+    String(formData.get("callbackUrl") ?? "/me"),
+  );
+  const userId = await requireUserId(callbackUrl, { requireUsername: false });
+  const result = profileSchema.safeParse({
+    bio: formData.get("bio") ?? "",
+    callbackUrl,
+    username: formData.get("username"),
+  });
+
+  if (!result.success) {
+    redirect(
+      profileFormPath(
+        callbackUrl,
+        "error",
+        "Username harus 3-24 karakter dan hanya memakai huruf, angka, titik, strip, atau underscore.",
+      ),
+    );
+  }
+
+  const username = result.data.username;
+  const existingUser = await prisma.user.findFirst({
+    where: {
+      id: { not: userId },
+      username: { equals: username, mode: "insensitive" },
+    },
+    select: { id: true },
+  });
+
+  if (existingUser) {
+    redirect(
+      profileFormPath(callbackUrl, "error", "Username itu sudah dipakai."),
+    );
+  }
+
+  try {
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        bio: result.data.bio || null,
+        username,
+      },
+    });
+  } catch (error) {
+    if (
+      error &&
+      typeof error === "object" &&
+      "code" in error &&
+      error.code === "P2002"
+    ) {
+      redirect(
+        profileFormPath(callbackUrl, "error", "Username itu sudah dipakai."),
+      );
+    }
+
+    throw error;
+  }
+
+  revalidatePath("/");
+  revalidatePath("/me");
+  revalidatePath(callbackUrl);
+  redirect(callbackUrl);
+}
+
+export async function deletePostAction(formData: FormData) {
+  const result = deletePostSchema.safeParse({
+    pathname: formData.get("pathname") ?? "/me",
+    postId: formData.get("postId"),
+    returnTo: formData.get("returnTo") ?? "/me",
+  });
+  const fallbackPath = result.success
+    ? safeReturnPath(result.data.returnTo)
+    : "/me";
+
+  if (!result.success) {
+    redirect(fallbackPath);
+  }
+
+  const pathname = safeReturnPath(result.data.pathname);
+  const returnTo = safeReturnPath(result.data.returnTo);
+  const user = await requireUser(pathname);
+  const post = await prisma.post.findUnique({
+    where: { id: result.data.postId },
+    select: { authorId: true, slug: true },
+  });
+
+  if (!post) {
+    redirect(returnTo);
+  }
+
+  if (post.authorId !== user.id && user.role !== "ADMIN") {
+    redirect(returnTo);
+  }
+
+  await prisma.post.delete({ where: { id: result.data.postId } });
+
+  revalidatePath("/");
+  revalidatePath("/me");
+  revalidatePath(`/p/${post.slug}`);
+
+  redirect(returnTo === `/p/${post.slug}` ? "/" : returnTo);
 }

@@ -17,3 +17,11 @@ export function loginPath(callbackUrl?: string | string[] | null) {
 
   return `/auth/login?callbackUrl=${encodeURIComponent(returnPath)}`;
 }
+
+export function usernameSetupPath(callbackUrl?: string | string[] | null) {
+  const params = new URLSearchParams({
+    callbackUrl: safeReturnPath(callbackUrl),
+  });
+
+  return `/auth/username?${params.toString()}`;
+}

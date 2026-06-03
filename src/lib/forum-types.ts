@@ -22,6 +22,7 @@ export type ForumPost = {
   createdAt: Date;
   author: {
     name: string | null;
+    username: string | null;
     image: string | null;
     role?: string | null;
     badge?: string | null;

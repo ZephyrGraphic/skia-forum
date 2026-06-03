@@ -1,9 +1,11 @@
 import Link from "next/link";
 import {
+  Clock3,
   DatabaseZap,
+  Flame,
   MessageCircle,
   MessageSquarePlus,
-  Star,
+  Pin,
   Users,
 } from "lucide-react";
 
@@ -141,7 +143,15 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         orderBy: [{ pinned: "desc" }, { featured: "desc" }, { createdAt: "desc" }],
         take: 40,
         include: {
-          author: { select: { name: true, image: true, role: true, badge: true } },
+          author: {
+            select: {
+              name: true,
+              username: true,
+              image: true,
+              role: true,
+              badge: true,
+            },
+          },
           category: { select: { name: true, slug: true, accent: true } },
           postTags: {
             include: { tag: { select: { name: true, slug: true } } },
@@ -163,80 +173,61 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     throw error;
   }
 
-  const featuredPost = posts.find((post) => post.featured) ?? posts[0];
-
   return (
-    <main>
-      <section className="home-dock">
-        <div className="container home-dock-grid">
-          <div className="home-copy">
-            <span className="eyebrow">SKIA Hangout</span>
-            <h1>Ngobrol progress, build, dan guild tanpa tenggelam di chat.</h1>
-            <p>
-              Board kecil buat pemain Seven Knights Idle Adventure yang mau
-              berbagi catatan stage, prioritas resource, kabar patch, dan
-              rekrutmen guild.
-            </p>
-            <div className="hero-actions">
-              <Link className="button button-primary" href="/compose">
-                <MessageSquarePlus size={18} />
-                Buat thread
-              </Link>
-              <Link className="button button-muted" href="/?type=QUESTION">
-                <MessageCircle size={18} />
-                Lihat tanya jawab
-              </Link>
-            </div>
-          </div>
-
-          <aside className="home-visual" aria-label="Sorotan forum">
-            <HeroBackdrop priority />
-            <div className="home-visual-card">
-              <span className="eyebrow">Sorotan board</span>
-              <strong>{featuredPost?.title ?? "Belum ada thread aktif"}</strong>
-              <small>
-                {featuredPost
-                  ? `${featuredPost.category.name} oleh ${
-                      featuredPost.author.name ?? "Member"
-                    }`
-                  : "Mulai thread pertama untuk komunitas."}
-              </small>
-            </div>
-          </aside>
-
-          <div className="hero-stats" aria-label="Statistik forum">
-            <span>
-              <strong>{formatNumber(threadCount)}</strong>
-              Thread
-            </span>
-            <span>
-              <strong>{formatNumber(memberCount)}</strong>
-              Member
-            </span>
-            <span>
-              <strong>{formatNumber(commentCount)}</strong>
-              Komentar
-            </span>
-          </div>
-        </div>
-      </section>
-
-      <section className="container forum-shell">
+    <main className="home-app-shell">
+      <div className="container home-app-grid">
         <CategoryNav activeSlug={category} categories={categories} />
 
-        <div className="feed-column">
-          {featuredPost ? (
-            <Link className="spotlight-thread" href={`/p/${featuredPost.slug}`}>
-              <Star size={19} />
+        <section className="feed-column home-command">
+          <div className="command-hero">
+            <div className="command-copy">
+              <h1>
+                Selamat Datang di <span>Komando</span>
+              </h1>
+              <p>
+                Pusat diskusi taktis, panduan hero, dan pembaruan terbaru untuk
+                para komandan Seven Knights Idle Adventure di Indonesia.
+              </p>
+            </div>
+            <div className="command-stats" aria-label="Statistik forum">
               <span>
-                <strong>{featuredPost.title}</strong>
-                <small>
-                  Highlight dari {featuredPost.category.name} oleh{" "}
-                  {featuredPost.author.name ?? "Member"}
-                </small>
+                <Users size={24} />
+                <strong>{formatNumber(memberCount)}</strong>
+                Komandan Aktif
               </span>
+              <span>
+                <MessageCircle size={24} />
+                <strong>{formatNumber(threadCount)}</strong>
+                Diskusi Taktik
+              </span>
+              <span>
+                <MessageSquarePlus size={24} />
+                <strong>{formatNumber(commentCount)}</strong>
+                Komentar
+              </span>
+            </div>
+          </div>
+
+          <div className="feed-toolbar">
+            <div className="quick-filters" aria-label="Filter cepat">
+              <Link className="is-active" href="/">
+                <Clock3 size={17} />
+                Terbaru
+              </Link>
+              <Link href="/?type=GUIDE">
+                <Flame size={17} />
+                Sedang Tren
+              </Link>
+              <Link href="/?type=DISCUSSION">
+                <Pin size={17} />
+                Disematkan
+              </Link>
+            </div>
+            <Link className="button button-primary desktop-compose" href="/compose">
+              <MessageSquarePlus size={18} />
+              Post Thread
             </Link>
-          ) : null}
+          </div>
 
           <FilterBar
             activeType={activeType}
@@ -265,8 +256,8 @@ export default async function HomePage({ searchParams }: HomePageProps) {
               <EmptyState />
             )}
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </main>
   );
 }

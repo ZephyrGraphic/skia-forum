@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SKIA Hangout - Beranda</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed": "#002114",
+                        "on-surface-variant": "#3d4a42",
+                        "on-tertiary-container": "#fffbff",
+                        "surface-dim": "#d5dcd6",
+                        "background": "#f5fbf5",
+                        "outline": "#6d7a72",
+                        "tertiary-container": "#6063ee",
+                        "primary-container": "#00855d",
+                        "primary-fixed": "#85f8c4",
+                        "secondary-container": "#dae2fd",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "tertiary": "#4648d4",
+                        "surface-container-high": "#e4eae4",
+                        "on-tertiary-fixed-variant": "#2f2ebe",
+                        "on-secondary-fixed": "#131b2e",
+                        "surface-container": "#e9efe9",
+                        "secondary": "#565e74",
+                        "error": "#ba1a1a",
+                        "inverse-primary": "#68dba9",
+                        "surface": "#f5fbf5",
+                        "tertiary-fixed": "#e1e0ff",
+                        "tertiary-fixed-dim": "#c0c1ff",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "on-surface": "#171d19",
+                        "on-secondary-container": "#5c647a",
+                        "on-background": "#171d19",
+                        "on-primary-container": "#f5fff7",
+                        "outline-variant": "#bccac0",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#2c322e",
+                        "secondary-fixed": "#dae2fd",
+                        "surface-bright": "#f5fbf5",
+                        "inverse-on-surface": "#ecf2ec",
+                        "primary": "#006948",
+                        "on-primary": "#ffffff",
+                        "surface-container-highest": "#dee4de",
+                        "surface-container-low": "#eff5ef",
+                        "on-tertiary-fixed": "#07006c",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "surface-variant": "#dee4de",
+                        "surface-tint": "#006c4a",
+                        "on-error-container": "#93000a",
+                        "primary-fixed-dim": "#68dba9",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#005137"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "40px",
+                        "2xl": "64px",
+                        "container-max": "1280px",
+                        "sm": "12px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "xs": "8px",
+                        "base": "4px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "body-sm": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        };
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        
+        .shadow-level-1 {
+            box-shadow: 0px 4px 20px rgba(15, 23, 42, 0.05);
+        }
+        
+        .shadow-level-2 {
+            box-shadow: 0px 12px 32px rgba(15, 23, 42, 0.12);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-xl docked full-width top-0 sticky z-50 border-b-2 border-primary/10 shadow-sm">
+<div class="flex justify-between items-center px-lg py-sm max-w-container-max mx-auto">
+<div class="font-headline-lg text-headline-lg font-bold text-primary dark:text-primary-fixed tracking-tight">
+                SKIA Hangout
+            </div>
+<nav class="hidden md:flex gap-lg font-headline-sm text-headline-sm md:font-headline-md md:text-headline-md">
+<a class="text-primary dark:text-primary-fixed border-b-2 border-primary dark:border-primary-fixed pb-1 cursor-pointer active:scale-95 transition-transform hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300" href="#">Forums</a>
+<a class="text-on-surface-variant dark:text-outline-variant pb-1 cursor-pointer active:scale-95 transition-transform hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300" href="#">Members</a>
+<a class="text-on-surface-variant dark:text-outline-variant pb-1 cursor-pointer active:scale-95 transition-transform hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300" href="#">Wiki</a>
+<a class="text-on-surface-variant dark:text-outline-variant pb-1 cursor-pointer active:scale-95 transition-transform hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300" href="#">Lounge</a>
+</nav>
+<div class="flex items-center gap-md text-primary dark:text-primary-fixed">
+<button class="hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300 cursor-pointer active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300 cursor-pointer active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<div class="flex flex-1 max-w-container-max mx-auto w-full">
+<!-- SideNavBar -->
+<aside class="bg-surface dark:bg-surface-container h-screen w-64 hidden lg:flex flex-col sticky top-[72px] bg-surface-container-low dark:bg-surface-container-highest shadow-md">
+<div class="flex flex-col gap-sm p-md">
+<div class="flex items-center gap-md mb-lg">
+<img alt="User Avatar" class="w-12 h-12 rounded-full border-2 border-primary/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8FOSYAi3qNuL7ZG65vtQ62oZ0dUdgBF220ZceAVIJ6X2WuZBZY8wSd6YtdxnyQIpJZz_vZe1Wv1hERI4xSk8wI52lSgYJJe9K_R3Pq2TneYLDxPdCj1rLOaFv9AKCYTt9fACh2Hpl9pW2qW4y7vAY7YXbi0SgRUeGGc0cVu3OX33SOAPJRWV1WV56RTR5xtSbBY-V1afw_bnpINEjWVG13jnh2QKM-vbneKjpeZFYlRaXPx987hf1vxVwRIkACBF5BwUPpWa1NATP"/>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-primary">Tactical Command</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Elite Member</p>
+</div>
+</div>
+<nav class="flex flex-col gap-base font-label-md text-label-md">
+<a class="flex items-center gap-md bg-primary-container text-on-primary-container dark:bg-primary-fixed-dim dark:text-on-primary-fixed rounded-lg px-md py-sm active:scale-98 hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+                        Home
+                    </a>
+<a class="flex items-center gap-md text-on-surface-variant dark:text-outline-variant px-md py-sm hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-all rounded-lg active:scale-98 hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+                        Guides &amp; Builds
+                    </a>
+<a class="flex items-center gap-md text-on-surface-variant dark:text-outline-variant px-md py-sm hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-all rounded-lg active:scale-98 hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="campaign">campaign</span>
+                        Patch News
+                    </a>
+<a class="flex items-center gap-md text-on-surface-variant dark:text-outline-variant px-md py-sm hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-all rounded-lg active:scale-98 hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+                        Meta Report
+                    </a>
+<a class="flex items-center gap-md text-on-surface-variant dark:text-outline-variant px-md py-sm hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-all rounded-lg active:scale-98 hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+                        Showcase
+                    </a>
+</nav>
+<div class="mt-auto pt-lg">
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-sm rounded-lg hover:bg-surface-tint transition-colors shadow-sm flex justify-center items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+                        Post Thread
+                    </button>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 px-md md:px-lg py-lg w-full max-w-[900px]">
+<!-- Hero Banner -->
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-xl p-xl mb-xl shadow-level-1 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16"></div>
+<div class="relative z-10">
+<h1 class="font-display-lg text-display-lg text-on-surface mb-sm">Selamat Datang di <span class="text-primary">Komando</span></h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-lg max-w-2xl">
+                        Pusat diskusi taktis, panduan hero, dan pembaruan terbaru untuk para komandan Seven Knights Idle Adventure di Indonesia.
+                    </p>
+<div class="flex gap-lg">
+<div class="bg-surface rounded-lg p-md border border-outline-variant/20 flex-1 flex items-center gap-md">
+<div class="w-12 h-12 bg-primary-container/20 rounded-full flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="group" style="font-variation-settings: 'FILL' 1;">group</span>
+</div>
+<div>
+<div class="font-headline-md text-headline-md text-on-surface">12.4K</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Komandan Aktif</div>
+</div>
+</div>
+<div class="bg-surface rounded-lg p-md border border-outline-variant/20 flex-1 flex items-center gap-md">
+<div class="w-12 h-12 bg-tertiary-container/20 rounded-full flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined" data-icon="forum" style="font-variation-settings: 'FILL' 1;">forum</span>
+</div>
+<div>
+<div class="font-headline-md text-headline-md text-on-surface">8.2K</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Diskusi Taktik</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Filters -->
+<div class="flex items-center justify-between mb-lg">
+<div class="flex gap-sm">
+<button class="px-md py-xs rounded-full bg-primary/10 text-primary font-label-md text-label-md border border-primary/20 flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="schedule">schedule</span>
+                        Terbaru
+                    </button>
+<button class="px-md py-xs rounded-full bg-surface text-on-surface-variant font-label-md text-label-md border border-outline-variant hover:bg-surface-container transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="local_fire_department">local_fire_department</span>
+                        Sedang Tren
+                    </button>
+<button class="px-md py-xs rounded-full bg-surface text-on-surface-variant font-label-md text-label-md border border-outline-variant hover:bg-surface-container transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="push_pin">push_pin</span>
+                        Disematkan
+                    </button>
+</div>
+<div class="relative">
+<input class="bg-surface-container-low border border-outline-variant/50 rounded-full py-xs pl-md pr-xl font-body-sm text-body-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary w-64 transition-all" placeholder="Cari panduan..." type="text"/>
+<span class="material-symbols-outlined absolute right-sm top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]" data-icon="search">search</span>
+</div>
+</div>
+<!-- Thread List -->
+<div class="flex flex-col gap-md">
+<!-- Thread Card 1 -->
+<article class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-md shadow-level-1 hover:shadow-level-2 transition-shadow duration-300 flex gap-md cursor-pointer group">
+<div class="flex flex-col items-center gap-xs min-w-[48px]">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="keyboard_arrow_up">keyboard_arrow_up</span>
+</button>
+<span class="font-label-md text-label-md text-on-surface font-bold">342</span>
+<button class="text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined" data-icon="keyboard_arrow_down">keyboard_arrow_down</span>
+</button>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-sm mb-xs">
+<span class="bg-tertiary/10 text-tertiary px-2 py-1 rounded font-label-sm text-label-sm border border-tertiary/20">Meta</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs">
+<img alt="Avatar" class="w-5 h-5 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmgFjyCA0M8-EX0t3VxEY8r0cOFJqhpBQdlh7tZ93NhuxaSjm-ffYZtrZjXw8UnbteugCIHaWXDsrLkIAWL0JqTP1Ax7Kg57uXO3A7R9cz9rcB1Gqbwqd_W49GK6AtgPLqKrrxsstTPB7qyz_3FzHioG9x-bLvHimuDMPQ_xjT_pArHxcmBsXUFN4VeT5z-OtYZVIEspzExIS-NP3ESbeFR-xOoC1u3orKpokbSHBw9IWMnaFh7Sf3XMyqYpFb4K6FcL3Hg4886gS1"/>
+                                RekanTakTis <span class="w-1.5 h-1.5 bg-primary rounded-full inline-block"></span>
+<span class="mx-1">•</span> 2 jam yang lalu
+                            </span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface mb-sm group-hover:text-primary transition-colors">Tier List Hero Arena Patch 1.15: Siapa yang Wajib Dibangun?</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-md">
+                            Setelah update balancing kemarin, posisi Lu Bu sedikit tergeser. Berikut analisa lengkap untuk rotasi tim Arena minggu ini beserta build equipment optimal.
+                        </p>
+<div class="flex items-center gap-lg">
+<div class="flex items-center gap-xs text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="chat_bubble_outline">chat_bubble_outline</span>
+                                89 Komentar
+                            </div>
+<div class="flex items-center gap-xs text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="visibility">visibility</span>
+                                1.2k Dilihat
+                            </div>
+<div class="flex items-center gap-xs text-on-surface-variant font-label-sm text-label-sm ml-auto">
+<span class="material-symbols-outlined text-[18px]" data-icon="bookmark_border">bookmark_border</span>
+                                Simpan
+                            </div>
+</div>
+</div>
+</article>
+<!-- Thread Card 2 -->
+<article class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-md shadow-level-1 hover:shadow-level-2 transition-shadow duration-300 flex gap-md cursor-pointer group">
+<div class="flex flex-col items-center gap-xs min-w-[48px]">
+<button class="text-on-surface-variant hover:text-primary transition-colors text-primary">
+<span class="material-symbols-outlined" data-icon="keyboard_arrow_up" style="font-variation-settings: 'FILL' 1;">keyboard_arrow_up</span>
+</button>
+<span class="font-label-md text-label-md text-primary font-bold">156</span>
+<button class="text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined" data-icon="keyboard_arrow_down">keyboard_arrow_down</span>
+</button>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-sm mb-xs">
+<span class="bg-primary/10 text-primary px-2 py-1 rounded font-label-sm text-label-sm border border-primary/20">Guide</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs">
+<img alt="Avatar" class="w-5 h-5 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDI2oVxhoWGgcW2oYTHkDlWXO4ve7IRzV_TlHYDC8SORSB2vvJcAgCddOwXn1oVo7bXylr_MXAXRoT7ZcV7FKsl7yDAcKUu8kRI5Nhkzm42xsSVCfpkRIqzAi6mSnVmRdxVb_Eh1trfVKNVyTX2FR4IDlIsEfn2rAKUjGUwpRYq96Hk3COZLh8s2NmOh6K8qKFlqacr36eutQDCjjCMCmnbkkpSQONlxsMPbj5_x5b5NMM8qSz_2m1xa1LY4IaHcqiIoKH4LhyMQQEB"/>
+                                JenderalKopi
+                                <span class="mx-1">•</span> 5 jam yang lalu
+                            </span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface mb-sm group-hover:text-primary transition-colors">Panduan Farming Gold Cepat untuk Pemula (Stage 1-400)</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-md">
+                            Bingung gold selalu habis buat upgrade potensi? Ini rute dan susunan tim terbaik buat afk farming semalaman tanpa nyangkut di boss.
+                        </p>
+<div class="flex items-center gap-lg">
+<div class="flex items-center gap-xs text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="chat_bubble_outline">chat_bubble_outline</span>
+                                42 Komentar
+                            </div>
+<div class="flex items-center gap-xs text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="visibility">visibility</span>
+                                850 Dilihat
+                            </div>
+<div class="flex items-center gap-xs text-on-surface-variant font-label-sm text-label-sm ml-auto">
+<span class="material-symbols-outlined text-[18px]" data-icon="bookmark_border">bookmark_border</span>
+                                Simpan
+                            </div>
+</div>
+</div>
+</article>
+</div>
+<div class="mt-xl flex justify-center">
+<button class="px-lg py-sm rounded-full border border-outline-variant font-label-md text-label-md text-on-surface hover:bg-surface-container-low transition-colors shadow-sm">
+                    Muat Lebih Banyak
+                </button>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="bg-surface-container-highest dark:bg-inverse-surface w-full py-xl mt-2xl border-t border-outline-variant/30 no shadows">
+<div class="max-w-container-max mx-auto px-lg flex flex-col md:flex-row justify-between items-center gap-lg">
+<div class="font-headline-md text-headline-md text-primary">
+                SKIA Hangout
+            </div>
+<div class="font-body-sm text-body-sm text-on-surface dark:text-inverse-on-surface">
+                © 2024 SKIA Hangout. Precision Tactical Gaming.
+            </div>
+<nav class="flex gap-md font-body-sm text-body-sm">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">Terms of Service</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">Community Guidelines</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">Contact Support</a>
+</nav>
+</div>
+</footer>
+</body></html>
